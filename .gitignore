@@ -1,0 +1,39 @@
+# Compiled Python
+*.py[cod]
+
+# Cached Flask Assets
+.webassets-cache/
+
+# Codegen
+src/web/static/css/compiled-scss.css
+src/web/static/css/bundle.min.css
+
+# Logs and databases #
+*.log
+*dev.db
+
+# Testing
+nosetests.xml
+
+# Packages
+*.egg
+*.egg-info
+__pycache__
+
+# Vim history
+.netrwhist
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor detritus
+*~
+*#
+.#*
+.*.swp
