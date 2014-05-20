@@ -64,7 +64,6 @@ def create_app():
 
 app = create_app()
 
-# import views below
-@app.route("/")
-def hello():
-    return "Hello World!"
+# register routes (must happen after app creation since routes use global app binding)
+from web import routes
+routes.register_endpoints(app)
