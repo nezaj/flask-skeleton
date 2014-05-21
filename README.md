@@ -1,8 +1,20 @@
 ## Flask Skeleton
-Flask Skeleton provides a base structure for a medium-sized Flask app. This is my default setup for whenever I create a new Flask project. This is meant for Python 2 exclusively.
+Flask Skeleton provides a base structure for a medium-sized Flask app. This is my default setup for whenever I create a new Flask project. This was built and tested with Python 2.
 
+* [Features](#features)
 * [Getting Started](#getting-started)
 * [Configuration](#configuration)
+
+### Skeleton Overview
+Here's a bunch of stuff you get right off the bat:
+* A nifty directory structure
+* Makefile for virtualenv creation, project cleanup, and testing
+* [pylint][pylint-docs] and [pep8][pep8-docs] configuration
+* App creation via [factory pattern][app-factory]
+* App configuration via [classes and inheritance][app-config]
+* Asset concatenation/minification via [Flask-Assets][flask-assets]
+* [SQLAlchemy][sqlalchemy] setup and db connection
+* Console utilities for database and project models (`sql.py` and `console.py`)
 
 ### Getting Started
 Before trying to make a [virtualenv][venv-docs], you should make sure that Python 2.7 is your system's default Python, and that [pip][pip-docs] is a Python 2 version of pip. (If that's not the case, you should uninstall and reinstall pip -- see the install directions on its [website][pip-docs].)
@@ -36,6 +48,13 @@ You should now be able to start up a Flask server using `run.py`. Flask will bin
 
 ### Configuration
 I need to be written!
+
+[pylint-docs]: http://docs.pylint.org/intro.html
+[pep8-docs]: http://legacy.python.org/dev/peps/pep-0008/#introduction
+[app-factory]: http://flask.pocoo.org/docs/patterns/appfactories/
+[app-config]: http://flask.pocoo.org/docs/config/#config
+[flask-assets]: http://flask-assets.readthedocs.org/en/latest/
+[sqlalchemy]: http://www.sqlalchemy.org/
 
 [venv-docs]: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 [pip-docs]: http://pip.readthedocs.org/
