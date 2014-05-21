@@ -1,11 +1,11 @@
 ## Flask Skeleton
 Flask Skeleton provides a base structure for a medium-sized Flask app. This is my default setup for whenever I create a new Flask project. This was built and tested with Python 2.
 
-* [Features](#features)
+* [Overview](#overview)
 * [Getting Started](#getting-started)
 * [Configuration](#configuration)
 
-### Skeleton Overview
+### Overview
 Here's a bunch of stuff you get right off the bat:
 * A nifty directory structure
 * Makefile for virtualenv creation, project cleanup, and testing
