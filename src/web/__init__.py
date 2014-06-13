@@ -2,7 +2,6 @@ import os
 import logging
 
 from flask import Flask
-from config import app_config
 from web import assets
 from loggers import get_app_stderr_handler, configure_sqlalchemy_logger
 from data.db import DatabaseConnection
@@ -43,9 +42,9 @@ def configure_loggers(app):
         app.config["STDERR_LOG_FORMAT"],
         level=app.config["SQLALCHEMY_LOG_LEVEL"])
 
-def create_app():
+def create_app(config_obj):
     " Factory for creating app "
-    app = MyApp(app_config)
+    app = MyApp(config_obj)
     configure_loggers(app)
 
     # big hack: if the Werkzeug reloader is going, then it decides to
