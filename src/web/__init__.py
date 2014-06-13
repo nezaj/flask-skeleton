@@ -59,10 +59,10 @@ def create_app(config_obj):
     if os.environ.get('WERKZEUG_RUN_MAIN') or app.config['ENV'] == 'prod':
         initialize_app(app)
 
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    from .services import services as services_blueprint
+    app.register_blueprint(services_blueprint)
+
     return app
-
-app = create_app()
-
-# register routes (must happen after app creation since routes use global app binding)
-from web import routes
-routes.register_endpoints(app)

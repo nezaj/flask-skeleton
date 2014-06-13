@@ -1,6 +1,8 @@
 """
 Logic for dashboard related routes
 """
+from . import main
 
-def hello():
+@main.route('/')
+def index():
     return "Hello World!"
