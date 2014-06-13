@@ -14,7 +14,7 @@ class Config(object):
     # Loggging
     APP_LOG_LEVEL = logging.DEBUG
     SQLALCHEMY_LOG_LEVEL = logging.WARN
-    STDERR_LOG_FORMAT = ('%(asctime)s %(levelname)s %(message)s','%m/%d/%Y %I:%M:%S %p')
+    STDERR_LOG_FORMAT = ('%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p')
 
     # Location of db connection. Use in-memory db by default
     SQLALCHEMY_DATABASE_URI = URL(drivername='sqlite', database=None)
