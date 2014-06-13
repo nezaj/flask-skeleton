@@ -27,7 +27,7 @@ pylint:
 	$(VENV_ACTIVATE) && \
     pylint src/data && \
     pylint src/web && \
-    pylint src/test && \
+    pylint src/tests && \
 	PYTHONPATH=src pylint src/*.py
 
 nosetests:
