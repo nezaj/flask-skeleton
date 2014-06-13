@@ -9,11 +9,12 @@ dependencies = [
     "cssmin>=0.2.0",
     "pyscss>=1.2.0",
     "gunicorn>=0.17.2",
-    "sqlalchemy>=0.9.3",
     "flask>=0.10.1",
-    "flask-assets>=0.9",
-    "alembic>=0.6.3",
+    "sqlalchemy>=0.9.3",
     "psycopg2>=2.5.2",
+    "alembic>=0.6.3",
+    "flask-assets>=0.9",
+    "flask-script>=2.0.5",
 ]
 
 setup(
