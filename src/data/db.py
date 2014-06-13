@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
@@ -10,6 +11,19 @@ class DatabaseConnection(object):
         self.engine = create_engine(url)
         self.session_factory = sessionmaker(bind=self.engine, query_cls=BaseQuery, **factory_args)
         self.session = scoped_session(self.session_factory)
+
+    @contextmanager
+    def transient_session(self):
+        "A shortcut for handling short-lived SQLAlchemy sessions."
+        session = self.session_factory()
+        try:
+            yield session
+            session.commit()
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
 def get_db():
     " Returns a database connection based on current config "
