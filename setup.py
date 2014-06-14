@@ -15,6 +15,7 @@ dependencies = [
     "alembic>=0.6.3",
     "flask-assets>=0.9",
     "flask-script>=2.0.5",
+    "flask-bcrypt>=0.6.0",
 ]
 
 setup(

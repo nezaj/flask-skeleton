@@ -28,6 +28,10 @@ class Config(object):
     # Location of alembic config file
     ALEMBIC_INI_PATH = os.path.join(SRC_DIR, 'alembic.ini')
 
+    # Number of rounds for bcrypt hashing
+    # timeit Bcrypt().generate_password_hash('some12uihr3', 3) ~ 1.49ms per loop
+    BCRYPT_LOG_ROUNDS = 4
+
 class DevelopmentConfig(Config):
     ENV = 'dev'
 
@@ -56,6 +60,10 @@ class ProductionConfig(Config):
 
     # This must be defined in Heroku or locally
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', os.environ.get('SKELETON_URL'))
+
+    # Increase rounds for production instances
+    # timeit Bcrypt().generate_password_hash('some12uihr3', 7) ~ 11.4ms per loop
+    BCRYPT_LOG_ROUNDS = 7
 
 config_dict = {
     'dev': DevelopmentConfig,
