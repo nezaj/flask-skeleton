@@ -6,14 +6,6 @@ from web import assets
 from loggers import get_app_stderr_handler, configure_sqlalchemy_logger
 from data.db import DatabaseConnection
 
-class MyApp(Flask):
-
-    db = None  # initialized later
-
-    def __init__(self, config_obj):
-        super(MyApp, self).__init__(__name__)
-        self.config.from_object(config_obj)
-
 def initialize_db(app):
     db_url = app.config['SQLALCHEMY_DATABASE_URI']
     app.db = DatabaseConnection(db_url)
@@ -44,7 +36,8 @@ def configure_loggers(app):
 
 def create_app(config_obj):
     " Factory for creating app "
-    app = MyApp(config_obj)
+    app = Flask(__name__)
+    app.config.from_object(config_obj)
     configure_loggers(app)
 
     # big hack: if the Werkzeug reloader is going, then it decides to
