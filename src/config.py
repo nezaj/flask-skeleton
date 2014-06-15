@@ -21,7 +21,6 @@ class Config(object):
 
     # Useful directories
     SRC_DIR = os.path.dirname(os.path.abspath(__file__))
-    TEST_DIR = os.path.join(SRC_DIR, 'test')
     WEB_DIR = os.path.join(SRC_DIR, 'web')
     STATIC_DIR = os.path.join(WEB_DIR, 'static')
 
@@ -48,9 +47,8 @@ class TestConfig(Config):
     # Don't want to see info messages about managing posts
     APP_LOG_LEVEL = logging.WARN
 
-    # DB is located in test directory
-    db_path = os.path.join(Config.TEST_DIR, 'dev.db')
-    SQLALCHEMY_DATABASE_URI = URL(drivername='sqlite', database=db_path)
+    # Use in-memory test database
+    SQLALCHEMY_DATABASE_URI = URL(drivername='sqlite', database=None)
 
 class ProductionConfig(Config):
     ENV = 'prod'

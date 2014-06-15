@@ -32,4 +32,4 @@ pylint:
 
 nosetests:
 	@echo "Running nosetests..."
-	$(VENV_ACTIVATE) && SKELETON_ENV=test nosetests
+	$(VENV_ACTIVATE) && nosetests

@@ -34,7 +34,7 @@ class User(Base, UserMixin):
 
     @password.setter
     def password(self, password):
-        self.password_hash = generate_password_hash(password, app_config['BCRYPT_LOG_ROUNDS'])
+        self.password_hash = generate_password_hash(password, app_config.BCRYPT_LOG_ROUNDS)
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
