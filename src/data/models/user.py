@@ -24,7 +24,7 @@ class User(Base, UserMixin):
     timezone = Column(String, nullable=False, server_default="US/Pacific",
                       doc="The tzdata timezone identifier that this user prefers to see.")
     bio = Column(Text)
-    is_admin = Column(Boolean(create_constraint=True, name="user_is_admin_bool"))
+    is_admin = Column(Boolean(name="is_admin"))
     member_since = Column(DateTime, default=datetime.utcnow)
 
     # pylint: disable=R0201

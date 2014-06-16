@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask_script import Manager, Shell
+from flask_script import Manager
 
 from web import create_app
 from data import models

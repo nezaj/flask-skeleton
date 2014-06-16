@@ -10,7 +10,7 @@ class UserModelTest(ModelTest):
     def test_no_password_getter(self):
         u = User(password='cat')
         with self.assertRaises(AttributeError):
-            u.password
+            u.password  # pylint: disable=W0104
 
     def test_password_verification(self):
         u = User(password='cat')

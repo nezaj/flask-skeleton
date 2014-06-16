@@ -4,7 +4,6 @@ Database manager for performing database operations
 from flask_script import Manager, prompt_bool
 
 from data.db import db_connect
-from data.models import Base
 
 db = db_connect()
 manager = Manager(usage="Perform database operations")
