@@ -4,6 +4,53 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from data.pagination import Pagination
 
+class BaseModel(object):
+    """
+    The base class for all of our database models.
+    """
+
+    @classmethod
+    def columns(cls):
+        "Returns all the columns on this model class."
+        return cls.__table__.columns  # pylint: disable=E1101
+
+    def _is_loaded(self, attr):
+        "Whether an attribute on a model is loaded and unexpired."
+        return attr not in self._sa_instance_state.unloaded
+
+    @classmethod
+    def get_defaults(cls, columns=None):
+        """
+        Returns a dict mapping the given columns to their default values.
+        """
+        columns = cls.columns() if columns is None else columns
+        return {col: col.default for col in columns if col.default}
+
+    def to_dict(self, columns=None):
+        """
+        Returns a dict mapping the given columns to their values.
+        """
+        columns = self.columns() if columns is None else columns
+        return {col: getattr(self, col.key) for col in columns if self._is_loaded(col.key)}
+
+    def _format_ctor(self, col_dict):
+        """
+        Prints a Python-constructor-like representation of this model
+        with the provided attributes.
+        """
+        def format_assignment(col, value):
+            return '{}={}'.format(col.key, repr(value))
+
+        arglist = "{}".format(', '.join([format_assignment(*pair) for pair in col_dict.iteritems()]))
+        return "{}({})".format(type(self).__name__, arglist)
+
+    def __str__(self):
+        key_columns = self.__mapper__.primary_key
+        return self._format_ctor(self.to_dict(columns=key_columns))
+
+    def __repr__(self):
+        return self._format_ctor(self.to_dict())
+
 class BaseQuery(Query):
     """
     A custom query object for supporting extra helpful operations
@@ -59,4 +106,4 @@ def named_declarative_base(**kwargs):
 
     return declarative_base(metadata=metadata, **kwargs)
 
-Base = named_declarative_base()
+Base = named_declarative_base(cls=BaseModel)
