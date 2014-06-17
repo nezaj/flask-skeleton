@@ -14,8 +14,10 @@ dependencies = [
     "psycopg2>=2.5.2",
     "alembic>=0.6.3",
     "flask-assets>=0.9",
-    "flask-script>=2.0.5",
     "flask-bcrypt>=0.6.0",
+    "flask-script>=2.0.5",
+    "flask-login>=0.2.11",
+    "flask-wtf>=0.9.5",
 ]
 
 setup(
