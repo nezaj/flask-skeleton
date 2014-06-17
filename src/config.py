@@ -9,7 +9,8 @@ class Config(object):
     DEBUG = False
 
     # Encryption key used to sign Flask session cookies
-    SECRET_KEY = os.environ.get('SKELETON_ENV')  # This needs to be defined
+    # Generate a random one using os.urandom(24)
+    SECRET_KEY = os.environ.get('SKELETON_ENV')
 
     # Loggging
     APP_LOG_LEVEL = logging.DEBUG
