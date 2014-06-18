@@ -27,6 +27,14 @@ class User(Base, UserMixin):
     is_admin = Column(Boolean(name="is_admin"))
     member_since = Column(DateTime, default=datetime.utcnow)
 
+    @staticmethod
+    def find_by_email(session, email):
+        return session.query(User).filter_by(email=email).scalar()
+
+    @staticmethod
+    def find_by_username(session, username):
+        return session.query(User).filter_by(username=username).scalar()
+
     # pylint: disable=R0201
     @property
     def password(self):
