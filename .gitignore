@@ -8,6 +8,9 @@
 src/web/static/css/compiled-scss.css
 src/web/static/css/bundle.min.css
 
+# Project environment variables
+.env
+
 # Logs and databases #
 *.log
 *dev.db

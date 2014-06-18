@@ -10,7 +10,7 @@ class Config(object):
 
     # Encryption key used to sign Flask session cookies
     # Generate a random one using os.urandom(24)
-    SECRET_KEY = os.environ.get('SKELETON_ENV')
+    SECRET_KEY = os.environ.get('APP_KEY')
 
     # Loggging
     APP_LOG_LEVEL = logging.DEBUG

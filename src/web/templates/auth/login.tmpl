@@ -1,0 +1,13 @@
+{% from "macros/fields.tmpl" import render_field %}
+{% extends "shared/layout.tmpl" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    <input type="submit">
+  </form>
+{% endblock %}

@@ -1,5 +1,13 @@
 #!/usr/bin/env python
 
+import os
+if os.path.exists('.env'):
+    print 'Importing environment from .env...'
+    for line in open('.env'):
+        var = line.strip().split('=', 1)
+        if len(var) == 2:
+            os.environ[var[0]] = var[1]
+
 from flask_script import Manager
 
 from web import create_app

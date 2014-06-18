@@ -5,7 +5,7 @@ from wtforms.validators import ValidationError
 
 class Predicate(object):
 
-    def __init__(f, message=None):
+    def __init__(self, f, message=None):
         self.f = f
         self.message = message
 

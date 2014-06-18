@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %} - Flask App</title>
+    {% block styles %}
+      {# template-specific styles which are not included in bundle go here #}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      {% include "shared/flash.tmpl" %}
+      <section class="main">
+        {% block content %}
+          {# page content goes here #}
+        {% endblock %}
+      </section>
+    </div>
+    {% block scripts %}
+      {# template-specific scripts which are not included in bundle go here #}
+    {% endblock %}
+  </body>
+</html>
