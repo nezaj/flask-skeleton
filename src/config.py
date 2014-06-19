@@ -32,6 +32,9 @@ class Config(object):
     # timeit Bcrypt().generate_password_hash('some12uihr3', 3) ~ 1.49ms per loop
     BCRYPT_LOG_ROUNDS = 4
 
+    # Don't intercept redirects
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
+
 class DevelopmentConfig(Config):
     ENV = 'dev'
 
