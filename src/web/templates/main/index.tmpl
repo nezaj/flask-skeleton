@@ -1,0 +1,9 @@
+{% extends "shared/layout.tmpl" %}
+
+{% block content %}
+  {% if not current_user.is_anonymous() %}
+      <p>Hello {{ current_user.username }}</p>
+  {% else %}
+      <p>Please login</p>
+  {% endif %}
+{% endblock %}

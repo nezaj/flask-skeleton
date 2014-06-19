@@ -2,11 +2,19 @@ import os
 import logging
 
 from flask import Flask
+from flask_login import LoginManager
+
 from data.db import db
 from loggers import get_app_stderr_handler, configure_sqlalchemy_logger
 from web import assets
 
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+login_manager.login_message = 'Please log-in to continue'
+login_manager.login_message_catagory = 'info'
+
 def register_blueprints(app):
+    " Registers blueprint routes on app "
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
@@ -18,17 +26,9 @@ def register_blueprints(app):
 
 def initialize_app(app):
     " Do any one-time initialization of the app prior to serving "
-    # big hack: if the Werkzeug reloader is going, then it decides to
-    # restart the whole process as a subprocess in order to manage the
-    # reloading, so create_app will run twice.
+    app.static_folder = app.config['STATIC_DIR']
+    assets.register_assets(app)
 
-    # We can detect whether this is the "real" serving
-    # process (the subprocess) by looking for the WERKZEUG_RUN_MAIN
-    # environment variable, so make the execution of heavyweight
-    # initialization code contingent on its presence.
-    if os.environ.get('WERKZEUG_RUN_MAIN') or app.config['ENV'] == 'prod':
-        app.static_folder = app.config['STATIC_DIR']
-        assets.register_assets(app)
     @app.teardown_appcontext
     def remove_session(response):  # pylint: disable=W0612
         db.session.remove()
@@ -51,7 +51,19 @@ def create_app(config_obj):
     app = Flask(__name__)
     app.config.from_object(config_obj)
     configure_loggers(app)
-    initialize_app(app)
+
+    # big hack: if the Werkzeug reloader is going, then it decides to
+    # restart the whole process as a subprocess in order to manage the
+    # reloading, so create_app will run twice.
+
+    # We can detect whether this is the "real" serving
+    # process (the subprocess) by looking for the WERKZEUG_RUN_MAIN
+    # environment variable, so make the execution of heavyweight
+    # initialization code contingent on its presence.
+    if os.environ.get('WERKZEUG_RUN_MAIN') or app.config['ENV'] == 'prod':
+        initialize_app(app)
+
+    login_manager.init_app(app)
     register_blueprints(app)
 
     return app
