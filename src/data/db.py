@@ -33,6 +33,8 @@ class DatabaseConnection(object):
         finally:
             session.close()
 
-def db_connect(db_url=app_config.SQLALCHEMY_DATABASE_URI):
+def db_connect(db_url):
     " Returns a DatabaseConnection object connected to the specified url "
     return DatabaseConnection(db_url)
+
+db = db_connect(app_config.SQLALCHEMY_DATABASE_URI)

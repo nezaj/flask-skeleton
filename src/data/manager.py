@@ -3,9 +3,8 @@ Database manager for performing database operations
 """
 from flask_script import Manager, prompt_bool
 
-from data.db import db_connect
+from data.db import db
 
-db = db_connect()
 manager = Manager(usage="Perform database operations")
 
 @manager.command

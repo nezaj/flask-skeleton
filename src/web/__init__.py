@@ -2,8 +2,9 @@ import os
 import logging
 
 from flask import Flask
-from web import assets
+from data.db import db
 from loggers import get_app_stderr_handler, configure_sqlalchemy_logger
+from web import assets
 
 def register_blueprints(app):
     from .main import main as main_blueprint
@@ -28,6 +29,10 @@ def initialize_app(app):
     if os.environ.get('WERKZEUG_RUN_MAIN') or app.config['ENV'] == 'prod':
         app.static_folder = app.config['STATIC_DIR']
         assets.register_assets(app)
+    @app.teardown_appcontext
+    def remove_session(response):  # pylint: disable=W0612
+        db.session.remove()
+        return response
 
 def configure_loggers(app):
     " Sets up app and sqlalchemy loggers "

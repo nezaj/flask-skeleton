@@ -2,11 +2,9 @@ from flask_wtf import Form
 from wtforms.fields import TextField, PasswordField
 from wtforms.validators import Email, InputRequired
 
-from data.db import db_connect
+from web import db
 from data.models import User
 from web.forms import Predicate
-
-db = db_connect()
 
 def email_is_available(email_address):
     if not email_address:
