@@ -9,7 +9,7 @@ src/web/static/css/compiled-scss.css
 src/web/static/css/bundle.min.css
 
 # Project environment variables
-.env
+src/.env
 
 # Logs and databases #
 *.log
