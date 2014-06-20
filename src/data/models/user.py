@@ -5,8 +5,8 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 
-from config import app_config
 from .base import Base
+from config import app_config
 
 class User(Base, UserMixin):
     __tablename__ = 'users'

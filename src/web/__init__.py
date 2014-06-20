@@ -5,6 +5,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
 
+from config import app_config
 from data.db import db
 from loggers import get_app_stderr_handler, configure_sqlalchemy_logger
 from web import assets
@@ -29,7 +30,7 @@ def initialize_app(app):
     " Do any one-time initialization of the app prior to serving "
     app.static_folder = app.config['STATIC_DIR']
     assets.register_assets(app)
-    toolbar = DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
     @app.teardown_appcontext
     def remove_session(response):  # pylint: disable=W0612

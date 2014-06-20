@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms.fields import TextField, PasswordField
 from wtforms.validators import Email, InputRequired
 
-from web import db
+from data.db import db
 from data.models import User
 from web.forms import Predicate
 

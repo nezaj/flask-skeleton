@@ -48,6 +48,9 @@ class DevelopmentConfig(Config):
 class TestConfig(Config):
     ENV = 'test'
 
+    # Dummy secret key for running tests
+    SECRET_KEY = 'test'
+
     # Don't want to see info messages about managing posts
     APP_LOG_LEVEL = logging.WARN
 

@@ -11,9 +11,9 @@ if os.path.exists('.env'):
 from flask_script import Manager
 
 from web import create_app
-from data import models
 from data.db import db
 from data.manager import manager as database_manager
+from data import models
 from config import app_config
 
 app = create_app(app_config)

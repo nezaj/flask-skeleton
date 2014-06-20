@@ -3,8 +3,9 @@ from flask_login import login_required, login_user, logout_user
 
 from . import auth
 from .forms import LoginForm
+from data.db import db
 from data.models import User
-from web import db, login_manager
+from web import login_manager
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -28,4 +29,4 @@ def logout():
 
 @login_manager.user_loader
 def load_user(userid):
-    return db.session.query(User).get(int(userid))
+    return db.session.query(User).get(int(userid))  # pylint: disable=E1101
