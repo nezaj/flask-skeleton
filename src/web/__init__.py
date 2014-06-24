@@ -63,7 +63,7 @@ def create_app(config_obj):
     # process (the subprocess) by looking for the WERKZEUG_RUN_MAIN
     # environment variable, so make the execution of heavyweight
     # initialization code contingent on its presence.
-    if os.environ.get('WERKZEUG_RUN_MAIN') or app.config['ENV'] == 'prod':
+    if os.environ.get('WERKZEUG_RUN_MAIN') or app.config['ENV'] in ['test', 'prod']:
         initialize_app(app)
 
     login_manager.init_app(app)
