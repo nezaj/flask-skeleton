@@ -27,7 +27,9 @@ def import_env():
 
 @manager.shell
 def make_context_shell():
-    return dict(app=app, db=db, models=models)
+    # Loads Base and all the models which inherit from Base
+    models_map = {name: cls for name, cls in models.__dict__.items() if isinstance(cls, type(models.Base))}
+    return dict(app=app, db=db, **models_map)
 
 if __name__ == '__main__':
     import_env()
