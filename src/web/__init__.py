@@ -17,8 +17,8 @@ login_manager.login_message_catagory = 'info'
 
 def register_blueprints(app):
     " Registers blueprint routes on app "
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    from .home import home as home_blueprint
+    app.register_blueprint(home_blueprint)
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
