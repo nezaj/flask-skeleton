@@ -4,7 +4,7 @@ Helper functions for configuring loggers.
 
 import logging
 
-from config import app_config
+from .config import app_config
 
 def configure_sqlalchemy_logger(format_string, level):
     logger = logging.getLogger('sqlalchemy.engine')
