@@ -10,6 +10,7 @@ src/web/static/css/bundle.min.css
 
 # Project environment variables
 src/.env
+.env
 
 # Logs and databases #
 *.log

@@ -3,7 +3,6 @@ import logging
 
 from flask import Flask
 from flask_login import LoginManager
-from flask_debugtoolbar import DebugToolbarExtension
 
 from config import app_config
 from data.db import db
@@ -30,7 +29,6 @@ def initialize_app(app):
     " Do any one-time initialization of the app prior to serving "
     app.static_folder = app.config['STATIC_DIR']
     assets.register_assets(app)
-    DebugToolbarExtension(app)
 
     @app.teardown_appcontext
     def remove_session(response):  # pylint: disable=W0612
@@ -54,18 +52,7 @@ def create_app(config_obj):
     app = Flask(__name__)
     app.config.from_object(config_obj)
     configure_loggers(app)
-
-    # big hack: if the Werkzeug reloader is going, then it decides to
-    # restart the whole process as a subprocess in order to manage the
-    # reloading, so create_app will run twice.
-
-    # We can detect whether this is the "real" serving
-    # process (the subprocess) by looking for the WERKZEUG_RUN_MAIN
-    # environment variable, so make the execution of heavyweight
-    # initialization code contingent on its presence.
-    if os.environ.get('WERKZEUG_RUN_MAIN') or app.config['ENV'] in ['test', 'prod']:
-        initialize_app(app)
-
+    initialize_app(app)
     login_manager.init_app(app)
     register_blueprints(app)
 
