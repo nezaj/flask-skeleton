@@ -11,7 +11,7 @@
 {% macro render_field(field) %}
   {{ field.label }}
   <div>
-    {{ field }}
+    {{ field(**kwargs)|safe }}
   </div>
   {{ render_errors(field.errors) }}
 {% endmacro %}

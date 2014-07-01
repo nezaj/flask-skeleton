@@ -1,6 +1,6 @@
 from flask_wtf import Form
 from wtforms.fields import TextField, PasswordField
-from wtforms.validators import Email, InputRequired
+from wtforms.validators import Email, InputRequired, Length
 
 from data.db import db
 from data.models import User
@@ -21,13 +21,15 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[InputRequired()])
 
 class RegistrationForm(Form):
+    username = TextField('Username', validators=[
+        InputRequired(),
+        Length(min=4, max=25, message="Username must be between 4 and 25 characters"),
+        Predicate(username_is_available, message="Sorry, this username has already been taken")
+    ])
     email = TextField('Email Address', validators=[
         Email(message="Please enter a valid email address"),
-        Predicate(email_is_available, message="Sorry, an account has already been made with this email!")
+        Predicate(email_is_available, message="Sorry, this email has already been taken")
     ])
-    username = TextField('Email Address', validators=[
-        InputRequired(),
-        Predicate(email_is_available, message="Sorry, an account has already been made with this email!")
+    password = PasswordField('Password', validators=[
+        InputRequired(message="Password can't be blank")
     ])
-    password = PasswordField('Password', validators=[InputRequired()])
-    password_confirm = PasswordField('Password Confirmation', validators=[InputRequired()])

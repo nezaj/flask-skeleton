@@ -3,7 +3,7 @@ from flask_login import login_required, login_user, logout_user
 
 from data.db import db
 from data.models import User
-from web.forms.auth import LoginForm
+from web.forms.auth import LoginForm, RegistrationForm
 
 auth = Blueprint('auth', __name__)
 
@@ -19,6 +19,19 @@ def login():
         else:
             flash("Invalid email/password combination", "danger")
     return render_template("auth/login.tmpl", form=form)
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        new_user = User()
+        form.populate_obj(new_user)  # pylint: disable=E1101
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(new_user)
+        flash("Thanks for signing up {}. Welcome!".format(new_user.username), 'info')
+        return redirect(url_for('home.index'))
+    return render_template("auth/register.tmpl", form=form)
 
 @auth.route('/logout', methods=['GET'])
 @login_required

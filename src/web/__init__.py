@@ -47,7 +47,7 @@ def configure_login_manager(app):
     from data.models import User
 
     # Register callback for loading users from session
-    # pylint: disable=E1101,W0612
+    # pylint: disable=W0612
     @login_manager.user_loader
     def load_user(userid):
         return db.session.query(User).get(int(userid))

@@ -1,14 +1,16 @@
 {% from "macros/fields.tmpl" import render_field %}
 {% extends "shared/layout.tmpl" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
-  <h3>Log in</h3>
+  <h3>Sign up</h3>
   <form method="POST">
     {{ form.hidden_tag() }}
+    {{ render_field(form.username, class="form-group") }}
     {{ render_field(form.email, class="form-group") }}
     {{ render_field(form.password, class="form-group") }}
     <input type="submit">
   </form>
 {% endblock %}
+
