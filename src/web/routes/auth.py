@@ -24,10 +24,7 @@ def login():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        new_user = User()
-        form.populate_obj(new_user)  # pylint: disable=E1101
-        db.session.add(new_user)
-        db.session.commit()
+        new_user = User.create(db.session, **form.data)
         login_user(new_user)
         flash("Thanks for signing up {}. Welcome!".format(new_user.username), 'info')
         return redirect(url_for('home.index'))

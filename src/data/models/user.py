@@ -6,9 +6,10 @@ from sqlalchemy.schema import Column
 from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 
 from .base import Base
+from .mixins import CRUDMixin
 from config import app_config
 
-class User(Base, UserMixin):
+class User(Base, UserMixin, CRUDMixin):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
