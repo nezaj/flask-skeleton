@@ -1,4 +1,4 @@
-## Flask Skeleton
+## [Flask Skeleton][flask-skeleton]
 Flask Skeleton provides a base structure for a medium-sized Flask app. This is my default setup for whenever I create a new Flask project. This was built and tested with Python 2.
 
 * [Overview](#overview)
@@ -49,6 +49,7 @@ You should now be able to start up a Flask server using `run.py`. Flask will bin
 ### Configuration
 I need to be written!
 
+[flask-skeleton]: http://flask-skeleton.herokuapp.com/
 [pylint-docs]: http://docs.pylint.org/intro.html
 [pep8-docs]: http://legacy.python.org/dev/peps/pep-0008/#introduction
 [app-factory]: http://flask.pocoo.org/docs/patterns/appfactories/
