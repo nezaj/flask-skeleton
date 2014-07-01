@@ -20,7 +20,6 @@ dependencies = [
     "flask-script==2.0.5",
     "flask-login==0.2.11",
     "flask-wtf==0.9.5",
-    "flask-debugtoolbar==0.9.0",
 ]
 
 setup(
