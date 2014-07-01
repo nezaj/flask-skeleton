@@ -15,11 +15,11 @@ if __name__ == '__main__':
     from flask_script import Manager
     from flask_script.commands import ShowUrls
 
-    from .web import create_app
-    from .data.db import db
-    from .data.manager import manager as database_manager
-    from .data import models
-    from .config import app_config
+    from src.web import create_app
+    from src.data.db import db
+    from src.data.manager import manager as database_manager
+    from src.data import models
+    from src.config import app_config
 
     app = create_app(app_config)
     manager = Manager(app)

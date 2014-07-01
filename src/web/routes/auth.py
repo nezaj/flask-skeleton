@@ -1,10 +1,10 @@
 from flask import Blueprint, flash, render_template, redirect, request, url_for
 from flask_login import login_required, login_user, logout_user
 
-from .forms import LoginForm
 from data.db import db
 from data.models import User
 from web import login_manager
+from web.forms.auth import LoginForm
 
 auth = Blueprint('auth', __name__)
 

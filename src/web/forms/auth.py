@@ -4,7 +4,7 @@ from wtforms.validators import Email, InputRequired
 
 from data.db import db
 from data.models import User
-from web.forms import Predicate
+from .util import Predicate
 
 def email_is_available(email_address):
     if not email_address:

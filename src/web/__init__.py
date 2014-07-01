@@ -16,13 +16,13 @@ login_manager.login_message_catagory = 'info'
 
 def register_blueprints(app):
     " Registers blueprint routes on app "
-    from .home import home as home_blueprint
+    from .routes import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
-    from .auth import auth as auth_blueprint
+    from .routes import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
-    from .services import services as services_blueprint
+    from .routes import services as services_blueprint
     app.register_blueprint(services_blueprint)
 
 def initialize_app(app):
