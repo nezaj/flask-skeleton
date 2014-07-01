@@ -20,7 +20,11 @@ virtualenv:
 
 pep8:
 	@echo "Running pep8..."
-	$(VENV_ACTIVATE) && pep8 src/web
+	$(VENV_ACTIVATE) && \
+	pep8 src/data && \
+	pep8 src/web && \
+	pep8 src/tests && \
+	pep8 src/*.py
 
 pylint:
 	@echo "Running pylint..."
@@ -28,7 +32,7 @@ pylint:
     pylint src/data && \
     pylint src/web && \
     pylint src/tests && \
-	PYTHONPATH=src pylint src/*.py
+    pylint src/*.py
 
 nosetests:
 	@echo "Running nosetests..."
