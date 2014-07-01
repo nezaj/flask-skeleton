@@ -1,30 +1,31 @@
 {% macro emit_css(bundle) %}
   {% assets bundle %}
-    <link rel="stylesheet" href="{{ ASSETS_URL }}">
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
   {% endassets %}
 {% endmacro %}
 
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{% block title %}{% endblock %} - Flask App</title>
+    <title>{% block title %}{% endblock %} - Flask Skeleton</title>
+
     {{ emit_css("css_all") }}
+
     {% block styles %}
       {# template-specific styles which are not included in bundle go here #}
     {% endblock %}
+
   </head>
   <body>
-    <div class="header">
-      {% include "shared/header.tmpl" %}
-    </div>
+    {% include "shared/_navbar.tmpl" %}
+
     <div class="container">
       {% include "shared/flash.tmpl" %}
-      <section class="main">
-        {% block content %}
-          {# page content goes here #}
-        {% endblock %}
-      </section>
+      {% block content %}
+        {# page content goes here #}
+      {% endblock %}
     </div>
+
     {% block scripts %}
       {# template-specific scripts which are not included in bundle go here #}
     {% endblock %}
