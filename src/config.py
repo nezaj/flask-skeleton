@@ -64,7 +64,7 @@ class ProductionConfig(Config):
     APP_LOG_LEVEL = logging.INFO
 
     # This must be defined in Heroku or locally
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', os.environ.get('SKELETON_URL'))
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
     # Increase rounds for production instances
     # timeit Bcrypt().generate_password_hash('some12uihr3', 7) ~ 11.4ms per loop
@@ -78,4 +78,4 @@ config_dict = {
     'default': DevelopmentConfig
 }
 
-app_config = config_dict[os.getenv('SKELETON_ENV') or 'default']
+app_config = config_dict[os.getenv('APP_ENV') or 'default']
