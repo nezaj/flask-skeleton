@@ -14,6 +14,11 @@ login_manager.login_view = 'auth.login'
 login_manager.login_message = 'Please log-in to continue'
 login_manager.login_message_catagory = 'info'
 
+class MyApp(Flask):
+    def __init__(self, config_obj):
+        super(MyApp, self).__init__(__name__)
+        self.config.from_object(config_obj)
+
 def register_blueprints(app):
     " Registers blueprint routes on app "
     from .routes import home as home_blueprint
@@ -35,6 +40,18 @@ def initialize_app(app):
         db.session.remove()
         return response
 
+def configure_login_manager(app):
+    " Configures Flask-Login "
+    login_manager.init_app(app)
+
+    from data.models import User
+
+    # Register callback for loading users from session
+    # pylint: disable=E1101,W0612
+    @login_manager.user_loader
+    def load_user(userid):
+        return db.session.query(User).get(int(userid))
+
 def configure_loggers(app):
     " Sets up app and sqlalchemy loggers "
 
@@ -49,11 +66,10 @@ def configure_loggers(app):
 
 def create_app(config_obj):
     " Factory for creating app "
-    app = Flask(__name__)
-    app.config.from_object(config_obj)
+    app = MyApp(config_obj)
     configure_loggers(app)
     initialize_app(app)
-    login_manager.init_app(app)
+    configure_login_manager(app)
     register_blueprints(app)
 
     return app

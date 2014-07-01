@@ -3,7 +3,6 @@ from flask_login import login_required, login_user, logout_user
 
 from data.db import db
 from data.models import User
-from web import login_manager
 from web.forms.auth import LoginForm
 
 auth = Blueprint('auth', __name__)
@@ -15,19 +14,15 @@ def login():
         user = User.find_by_email(db.session, form.email.data)
         if user and user.verify_password(form.password.data):
             login_user(user)
-            flash("Logged in successfully")
-            return redirect(request.args.get('next') or url_for('main.index'))
+            flash("Logged in successfully", "info")
+            return redirect(request.args.get('next') or url_for('home.index'))
         else:
-            flash("Invalid email/password combination")
+            flash("Invalid email/password combination", "danger")
     return render_template("auth/login.tmpl", form=form)
 
 @auth.route('/logout', methods=['GET'])
 @login_required
 def logout():
     logout_user()
-    flash("Logged out successfully")
-    return redirect(url_for('main.index'))
-
-@login_manager.user_loader
-def load_user(userid):
-    return db.session.query(User).get(int(userid))  # pylint: disable=E1101
+    flash("Logged out successfully", "info")
+    return redirect(url_for('home.index'))
