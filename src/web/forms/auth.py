@@ -1,20 +1,28 @@
+import re
+
 from flask_wtf import Form
-from wtforms.fields import BooleanField, SubmitField, TextField, PasswordField
+from wtforms.fields import BooleanField, TextField, PasswordField
 from wtforms.validators import Email, InputRequired, Length
 
 from data.db import db
 from data.models import User
 from .util import Predicate
 
-def email_is_available(email_address):
-    if not email_address:
+def email_is_available(email):
+    if not email:
         return True
-    return not User.find_by_email(db.session, email_address)
+    return not User.find_by_email(db.session, email)
 
 def username_is_available(username):
     if not username:
         return True
     return not User.find_by_username(db.session, username)
+
+def username_is_safe(username):
+    " Only alphanumeric characters and dashes are allowed in usernames "
+    if not username:
+        return True
+    return re.match(r'^[\w-]+$', username) is not None
 
 class LoginForm(Form):
     email = TextField('Email Address', validators=[
@@ -27,10 +35,10 @@ class LoginForm(Form):
     ])
 
     remember_me = BooleanField('Keep me logged in')
-    submit = SubmitField('Log in')
 
 class RegistrationForm(Form):
     username = TextField('Username', validators=[
+        Predicate(username_is_safe, message="Usernames may only contain letters, numbers, and dashes."),
         Predicate(username_is_available, message="Sorry, this username has already been taken"),
         Length(min=4, max=25, message="Username must be between 4 and 25 characters"),
         InputRequired(message="Username can't be blank")
@@ -47,5 +55,3 @@ class RegistrationForm(Form):
         Length(min=4, message="Password must be at least 4 characters"),
         InputRequired(message="Password can't be blank")
     ])
-
-    submit = SubmitField('Sign up')
