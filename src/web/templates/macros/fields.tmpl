@@ -2,16 +2,27 @@
   {% if errors %}
     <div>
       {% for error in errors %}
-        <p>{{ error }}</p>
+        <p class="form-error">{{ error }}</p>
       {% endfor %}
     </div>
   {% endif %}
 {% endmacro %}
 
-{% macro render_field(field) %}
+{% macro render_text_field(field) %}
   {{ field.label }}
   <div>
     {{ field(**kwargs)|safe }}
   </div>
   {{ render_errors(field.errors) }}
+{% endmacro %}
+
+{% macro render_checkbox_field(field) %}
+  <div class="form-group">
+    {{ field|safe }}
+    <small>{{ field.label }}</small>
+  </div>
+{% endmacro %}
+
+{% macro render_submit_field(field) %}
+  {{ field(**kwargs)|safe }}
 {% endmacro %}

@@ -1,1 +1,6 @@
 /* Application-wide CSS */
+$danger-color: #e74c3c;
+
+.form-error {
+    color: $danger-color
+}
