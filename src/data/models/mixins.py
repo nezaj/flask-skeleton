@@ -2,9 +2,9 @@ class CRUDMixin(object):
     " Provides CRUD interface for models "
 
     @classmethod
-    def create(cls, session, **kwargs):
+    def create(cls, session, commit=True, **kwargs):
         instance = cls(**kwargs)
-        return instance.save(session)
+        return instance.save(session, commit)
 
     def update(self, session, commit=True, **kwargs):
         for attr, value in kwargs.iteritems():

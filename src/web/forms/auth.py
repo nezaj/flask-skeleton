@@ -19,39 +19,42 @@ def username_is_available(username):
     return not User.find_by_username(db.session, username)
 
 def username_is_safe(username):
-    " Only alphanumeric characters and dashes are allowed in usernames "
+    """
+    Only letters (a-z), numbers, and periods are allowed in usernames.
+    Based off Google username validator
+    """
     if not username:
         return True
-    return re.match(r'^[\w-]+$', username) is not None
+    return re.match(r'^[\w]+$', username) is not None
 
 class LoginForm(Form):
     email = TextField('Email Address', validators=[
         Email(message="Please enter a valid email address"),
-        InputRequired(message="Email can't be blank")
+        InputRequired(message="You can't leave this empty")
     ])
 
     password = PasswordField('Password', validators=[
-        InputRequired(message="Password can't be blank")
+        InputRequired(message="You can't leave this empty")
     ])
 
     remember_me = BooleanField('Keep me logged in')
 
 class RegistrationForm(Form):
-    username = TextField('Username', validators=[
-        Predicate(username_is_safe, message="Usernames may only contain letters, numbers, and dashes."),
-        Predicate(username_is_available, message="Sorry, this username has already been taken"),
-        Length(min=4, max=25, message="Username must be between 4 and 25 characters"),
-        InputRequired(message="Username can't be blank")
+    username = TextField('Choose your username', validators=[
+        Predicate(username_is_safe, message="Please use only letters (a-z) and/or, numbers"),
+        Predicate(username_is_available,
+                  message="An account has already been registered with that username. Try another?"),
+        Length(min=6, max=30, message="Please use between 6 and 30 characters"),
+        InputRequired(message="You can't leave this empty")
     ])
 
-    email = TextField('Email Address', validators=[
-        Predicate(email_is_available, message="Sorry, this email has already been taken"),
+    email = TextField('Your email address', validators=[
+        Predicate(email_is_available, message="An account has already been reigstered with that email. Try another?"),
         Email(message="Please enter a valid email address"),
-        InputRequired(message="Email can't be blank")
+        InputRequired(message="You can't leave this empty")
     ])
 
-    password = PasswordField('Password', validators=[
-        Length(max=25, message="Password can't be more than 25 characters"),
-        Length(min=4, message="Password must be at least 4 characters"),
-        InputRequired(message="Password can't be blank")
+    password = PasswordField('Create a password', validators=[
+        Length(min=6, max=30, message="Please use between 6 and 30 characters"),
+        InputRequired(message="You can't leave this empty")
     ])

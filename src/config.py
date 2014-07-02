@@ -32,8 +32,17 @@ class Config(object):
     # timeit Bcrypt().generate_password_hash('some12uihr3', 3) ~ 1.49ms per loop
     BCRYPT_LOG_ROUNDS = 4
 
-    # Don't intercept redirects
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
+    # Mail settings
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.environ.get('APP_MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('APP_MAIL_PASSWORD')
+
+    INFO_ACCOUNT = 'info@flask-skeleton.herokuapp.com'
+    TEST_RECIPIENT = os.environ.get('APP_TEST_RECIPIENT')  # Test account for recieving messages
+    MAIL_DEFAULT_SENDER = INFO_ACCOUNT
 
 class DevelopmentConfig(Config):
     ENV = 'dev'

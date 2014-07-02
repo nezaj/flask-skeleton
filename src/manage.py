@@ -33,4 +33,14 @@ if __name__ == '__main__':
         models_map = {name: cls for name, cls in models.__dict__.items() if isinstance(cls, type(models.Base))}
         return dict(app=app, db=db, **models_map)
 
+    @manager.command
+    def test_email():
+        from flask_mail import Mail, Message
+        mail = Mail(app)
+        msg = Message(subject='test subject', recipients=[app.config['TEST_RECIPIENT']])
+        msg.body = 'text body'
+        msg.html = '<b>HTML</b> body'
+        with app.app_context():
+            mail.send(msg)
+
     manager.run()

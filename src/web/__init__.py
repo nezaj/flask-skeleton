@@ -3,16 +3,16 @@ import logging
 
 from flask import Flask
 from flask_login import LoginManager
+from flask_mail import Mail
 
 from config import app_config
 from data.db import db
 from loggers import get_app_stderr_handler, configure_sqlalchemy_logger
 from web import assets
 
+# Initialize extensions to be used in create_app
 login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
-login_manager.login_message = 'Please log-in to continue'
-login_manager.login_message_catagory = 'info'
+mail = Mail()
 
 class MyApp(Flask):
     def __init__(self, config_obj):
@@ -40,17 +40,26 @@ def initialize_app(app):
         db.session.remove()
         return response
 
-def configure_login_manager(app):
-    " Configures Flask-Login "
-    login_manager.init_app(app)
+def register_extensions(app):
+    " Configures flask extensions to be used with app"
 
-    from data.models import User
+    def register_flask_login(app):
+        login_manager.init_app(app)
+        login_manager.login_view = 'auth.login'
+        login_manager.login_message = 'Please log-in to continue'
+        login_manager.login_message_catagory = 'info'
 
-    # Register callback for loading users from session
-    # pylint: disable=W0612
-    @login_manager.user_loader
-    def load_user(userid):
-        return db.session.query(User).get(int(userid))
+        # Register callback for loading users from session
+        from data.models import User
+        @login_manager.user_loader
+        def load_user(userid):  # pylint: disable=W0612
+            return db.session.query(User).get(int(userid))
+
+    def register_flask_mail(app):
+        mail.init_app(app)
+
+    register_flask_login(app)
+    register_flask_mail(app)
 
 def configure_loggers(app):
     " Sets up app and sqlalchemy loggers "
@@ -69,7 +78,7 @@ def create_app(config_obj):
     app = MyApp(config_obj)
     configure_loggers(app)
     initialize_app(app)
-    configure_login_manager(app)
+    register_extensions(app)
     register_blueprints(app)
 
     return app
