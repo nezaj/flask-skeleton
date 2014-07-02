@@ -1,4 +1,5 @@
-from flask import Blueprint, flash, render_template, redirect, request, url_for
+
+from flask import Blueprint, escape, flash, render_template, redirect, request, url_for
 from flask_login import login_required, login_user, logout_user
 
 from data.db import db
@@ -26,7 +27,7 @@ def register():
     if form.validate_on_submit():
         new_user = User.create(db.session, **form.data)
         login_user(new_user)
-        flash("Thanks for signing up {}. Welcome!".format(new_user.username), 'info')
+        flash("Thanks for signing up {}. Welcome!".format(escape(new_user.username)), 'info')
         return redirect(url_for('home.index'))
     return render_template("auth/register.tmpl", form=form)
 

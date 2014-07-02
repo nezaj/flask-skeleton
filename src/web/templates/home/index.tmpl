@@ -2,7 +2,7 @@
 
 {% block content %}
   {% if not current_user.is_anonymous() %}
-      <p>Hello {{ current_user.username }}</p>
+      <p>Hello {{ current_user.username|e }}</p>
   {% else %}
       <p>Please login</p>
   {% endif %}

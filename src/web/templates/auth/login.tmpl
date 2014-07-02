@@ -1,4 +1,4 @@
-{% from "macros/fields.tmpl" import render_text_field, render_checkbox_field, render_submit_field %}
+{% from "macros/fields.tmpl" import render_input_field, render_password_field, render_checkbox_field %}
 {% extends "shared/layout.tmpl" %}
 
 {% block title %}Login{% endblock %}
@@ -7,9 +7,9 @@
   <h3>Log in</h3>
   <form method="POST">
     {{ form.hidden_tag() }}
-    {{ render_text_field(form.email, class="form-group") }}
-    {{ render_text_field(form.password, class="form-group") }}
+    {{ render_input_field(form.email) }}
+    {{ render_password_field(form.password) }}
     {{ render_checkbox_field(form.remember_me) }}
-    {{ render_submit_field(form.submit, class="btn btn-info") }}
+    <input type="submit" class="btn btn-info">
   </form>
 {% endblock %}

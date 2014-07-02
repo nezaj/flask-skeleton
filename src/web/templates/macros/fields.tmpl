@@ -1,3 +1,17 @@
+{# Form helper macros come in two sets:
+
+render_xyz: A macro to render a label and control of type xyz.  These
+accept parameters associated with the control type (e.g. type for
+input elements.)  They also accept lc and rc parameters to control the
+CSS class of the label and control, respectively.  The most obvious
+intended use of this is for Bootstrap horizontal forms.
+
+render_xyz_field: Like render_xyz, but renders a wtforms field. This not only
+passes along the name and value of the field automatically, but also renders
+a paragraph with any field-related errors beneath the field's control.
+
+#}
+
 {% macro render_errors(errors) %}
   {% if errors %}
     <div>
@@ -8,21 +22,55 @@
   {% endif %}
 {% endmacro %}
 
-{% macro render_text_field(field) %}
-  {{ field.label }}
-  <div>
-    {{ field(**kwargs)|safe }}
+{% macro render_input(name, value, label=None, type="text", disabled=False, readonly=False, errors=None, lc=None, rc=None) %}
+  {% if label is not none and type != "hidden" %}
+    <label class="{{ lc if lc else '' }} control-label" for="{{ name }}">{{ label }}</label>
+  {% endif %}
+  <div class="{{ rc if rc else '' }}">
+    <input id="{{ name }}" type="{{ type }}" name="{{ name }}" value="{{ value|e }}"
+           class="{{ 'btn btn-default' if type in ['submit', 'button'] else 'form-control' }}"
+           {{ "readonly" if readonly else "" }}
+           {{ "disabled" if disabled else "" }}>
+    {{ render_errors(errors) }}
   </div>
-  {{ render_errors(field.errors) }}
+{% endmacro %}
+
+{% macro render_checkbox(name, checked, label=None, disabled=False, errors=None, lc=None, rc=None) %}
+  <div class="{{ rc if rc else '' }}">
+    <input id="{{ name }}" type="checkbox" name="{{ name }}" value="on"
+           {{ "checked" if checked else "" }}
+           {{ "disabled" if disabled else "" }}>
+    <label class="{{ lc if lc else '' }} control-label" for="{{ name }}">{{ label }}</label>
+    {{ render_errors(errors) }}
+  </div>
+{% endmacro %}
+
+{% macro render_input_field(field) %}
+  {% with value = field.data if field.data is not none else "" %}
+    <div class="form-group">
+      {{ render_input(field.name, value, field.label, errors=field.errors, **kwargs) }}
+    </div>
+  {% endwith %}
+{% endmacro %}
+
+{% macro render_password_field(field) %}
+  {% with value = "" %}
+    <div class="form-group">
+      {{ render_input(field.name, value, field.label, errors=field.errors, type="password", **kwargs) }}
+    </div>
+  {% endwith %}
 {% endmacro %}
 
 {% macro render_checkbox_field(field) %}
-  <div class="form-group">
-    {{ field|safe }}
-    <small>{{ field.label }}</small>
-  </div>
+  {% with value = field.data if field.data is not none else "" %}
+    <div class="form-group">
+      {{ render_checkbox(field.name, value, field.label, errors=field.errors, **kwargs) }}
+    </div>
+  {% endwith %}
 {% endmacro %}
 
 {% macro render_submit_field(field) %}
-  {{ field(**kwargs)|safe }}
+  <div class="form-group">
+    {{ render_input(field.name, field.label.text, errors=field.errors, type="submit", **kwargs) }}
+  </div>
 {% endmacro %}
