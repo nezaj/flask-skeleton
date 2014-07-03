@@ -8,7 +8,7 @@ from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 from .base import Base
 from .mixins import CRUDMixin
 from config import app_config
-from data.util import generate_activate_token
+from data.util import generate_random_token
 
 class User(Base, UserMixin, CRUDMixin):
     __tablename__ = 'users'
@@ -27,7 +27,7 @@ class User(Base, UserMixin, CRUDMixin):
                       doc="The tzdata timezone identifier that this user prefers to see.")
     bio = Column(Text)
     activate_token = Column(String, nullable=False,
-                            default=generate_activate_token(),
+                            default=generate_random_token(),
                             doc="Activation token for email verification")
     verified = Column(Boolean(name="verified"), nullable=False, default=False)
     is_admin = Column(Boolean(name="is_admin"))

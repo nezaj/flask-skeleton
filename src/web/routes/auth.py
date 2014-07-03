@@ -5,26 +5,11 @@ from flask_mail import Message
 
 from data.db import db
 from data.models import User
-from data.util import generate_activate_token
-from web.forms.auth import LoginForm, RegistrationForm
-from web.util import send_async_email
+from data.util import generate_random_token, get_password_reset_token
+from web.forms.auth import EmailForm, LoginForm, RegistrationForm
+from .util import send_activation_email, send_password_reset_email
 
 auth = Blueprint('auth', __name__)
-
-def send_activation_email(new_user):
-    current_app.logger.info("Begin sending activation email to {}...".format(new_user.email))
-
-    msg = Message(subject="Confirm your account", recipients=[new_user.email])
-    activate_link = url_for('auth.activate', userid=new_user.id, activate_token=new_user.activate_token, _external=True)
-    msg.body = render_template('email/activate.txt', activate_link=activate_link)
-    msg.html = render_template('email/activate.tmpl', activate_link=activate_link)
-
-    # Hack to have access to app object outside of HTTP request. Useful so email can be sent async
-    app = current_app._get_current_object()  # pylint: disable=W0212
-
-    success = "Activation email successfuly sent to {}".format(new_user.email)
-    failure = "Activation email failed to send to {}".format(new_user.email)
-    send_async_email(app, msg, success, failure)
 
 @auth.route('/activate', methods=['GET'])
 def activate():
@@ -44,17 +29,18 @@ def activate():
 
     return redirect(url_for('home.index'))
 
-@login_required
-@auth.route('/resend_activation_email', methods=['GET'])
-def resend_activation_email():
-    if current_user.is_verified():
-        flash("This account has already been activated.", 'warning')
-    else:
-        current_user.update(db.session, activate_token=generate_activate_token())
-        send_activation_email(current_user)
-        flash('Activation email sent! Please check your inbox', 'info')
-
-    return redirect(url_for('home.index'))
+@auth.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    form = EmailForm()
+    if form.validate_on_submit():
+        user = User.find_by_email(db.session, form.email.data)
+        if user:
+            reset_token = get_password_reset_token(user)
+            send_password_reset_email(user, reset_token)
+            return render_template("auth/password_token_sent", user_email=user.email)
+        else:
+            flash("We couldn't find an account with that email. Please try again", 'warning')
+    return render_template("auth/forgot_password.tmpl", form=form)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -69,6 +55,13 @@ def login():
             flash("Invalid email/password combination", "danger")
     return render_template("auth/login.tmpl", form=form)
 
+@auth.route('/logout', methods=['GET'])
+@login_required
+def logout():
+    logout_user()
+    flash("Logged out successfully", "info")
+    return redirect(url_for('home.index'))
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -80,9 +73,14 @@ def register():
         return redirect(url_for('home.index'))
     return render_template("auth/register.tmpl", form=form)
 
-@auth.route('/logout', methods=['GET'])
 @login_required
-def logout():
-    logout_user()
-    flash("Logged out successfully", "info")
+@auth.route('/resend_activation_email', methods=['GET'])
+def resend_activation_email():
+    if current_user.is_verified():
+        flash("This account has already been activated.", 'warning')
+    else:
+        current_user.update(db.session, activate_token=generate_random_token())
+        send_activation_email(current_user)
+        flash('Activation email sent! Please check your inbox', 'info')
+
     return redirect(url_for('home.index'))

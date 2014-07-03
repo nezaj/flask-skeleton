@@ -12,4 +12,6 @@
     {{ render_checkbox_field(form.remember_me) }}
     <input type="submit" class="btn btn-info">
   </form>
+  <br>
+  <a href="{{ url_for('auth.forgot_password') }}">Forgot password?</a>
 {% endblock %}

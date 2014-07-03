@@ -24,12 +24,13 @@ def username_is_safe(username):
         return True
     return re.match(r'^[\w]+$', username) is not None
 
-class LoginForm(Form):
+class EmailForm(Form):
     email = TextField('Email Address', validators=[
         Email(message="Please enter a valid email address"),
         InputRequired(message="You can't leave this empty")
     ])
 
+class LoginForm(EmailForm):
     password = PasswordField('Password', validators=[
         InputRequired(message="You can't leave this empty")
     ])
