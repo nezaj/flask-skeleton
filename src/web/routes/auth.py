@@ -22,8 +22,9 @@ def send_activation_email(new_user):
     # Hack to have access to app object outside of HTTP request. Useful so email can be sent async
     app = current_app._get_current_object()  # pylint: disable=W0212
 
-    send_async_email(app, msg)
-    current_app.logger.info("Activation email successfully sent to {}".format(new_user.email))
+    success = "Activation email successfuly sent to {}".format(new_user.email)
+    failure = "Activation email failed to send to {}".format(new_user.email)
+    send_async_email(app, msg, success, failure)
 
 @auth.route('/activate', methods=['GET'])
 def activate():
