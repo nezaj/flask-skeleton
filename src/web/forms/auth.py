@@ -19,10 +19,7 @@ def username_is_available(username):
     return not User.find_by_username(db.session, username)
 
 def username_is_safe(username):
-    """
-    Only letters (a-z), numbers, and periods are allowed in usernames.
-    Based off Google username validator
-    """
+    " Only letters (a-z) and  numbers are allowed in usernames. Based off Google username validator "
     if not username:
         return True
     return re.match(r'^[\w]+$', username) is not None
@@ -41,7 +38,7 @@ class LoginForm(Form):
 
 class RegistrationForm(Form):
     username = TextField('Choose your username', validators=[
-        Predicate(username_is_safe, message="Please use only letters (a-z) and/or, numbers"),
+        Predicate(username_is_safe, message="Please use only letters (a-z) and numbers"),
         Predicate(username_is_available,
                   message="An account has already been registered with that username. Try another?"),
         Length(min=6, max=30, message="Please use between 6 and 30 characters"),

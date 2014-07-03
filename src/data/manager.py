@@ -1,5 +1,11 @@
 """
+Usage: ./manage.py db <command>
 Database manager for performing database operations
+
+Commands:
+- db drop       : Drops the database
+- db create     : Creates the database
+- db recreate   : Re-creates the database
 """
 from flask_script import Manager, prompt_bool
 

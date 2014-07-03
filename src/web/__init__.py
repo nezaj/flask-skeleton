@@ -28,7 +28,7 @@ def register_blueprints(app):
     app.register_blueprint(auth_blueprint)
 
     from .routes import services as services_blueprint
-    app.register_blueprint(services_blueprint)
+    app.register_blueprint(services_blueprint, url_prefix="/services")
 
 def initialize_app(app):
     " Do any one-time initialization of the app prior to serving "

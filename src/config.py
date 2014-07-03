@@ -40,8 +40,9 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('APP_MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('APP_MAIL_PASSWORD')
 
+    # Mail accounts
     INFO_ACCOUNT = 'info@flask-skeleton.herokuapp.com'
-    TEST_RECIPIENT = os.environ.get('APP_TEST_RECIPIENT')  # Test account for recieving messages
+    TEST_RECIPIENT = os.environ.get('APP_TEST_RECIPIENT')
     MAIL_DEFAULT_SENDER = INFO_ACCOUNT
 
 class DevelopmentConfig(Config):
