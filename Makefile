@@ -32,7 +32,7 @@ pylint:
     pylint src/data && \
     pylint src/web && \
     pylint src/tests && \
-    pylint src/*.py
+    PYTHONPATH=src pylint src/*.py
 
 nosetests:
 	@echo "Running nosetests..."
