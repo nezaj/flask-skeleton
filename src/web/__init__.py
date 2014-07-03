@@ -47,7 +47,7 @@ def register_extensions(app):
         login_manager.init_app(app)
         login_manager.login_view = 'auth.login'
         login_manager.login_message = 'Please log-in to continue'
-        login_manager.login_message_catagory = 'info'
+        login_manager.login_message_category = 'warning'
 
         # Register callback for loading users from session
         from data.models import User

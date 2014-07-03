@@ -8,6 +8,7 @@ from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 from .base import Base
 from .mixins import CRUDMixin
 from config import app_config
+from data.util import generate_activate_token
 
 class User(Base, UserMixin, CRUDMixin):
     __tablename__ = 'users'
@@ -25,6 +26,10 @@ class User(Base, UserMixin, CRUDMixin):
     timezone = Column(String, nullable=False, server_default="US/Pacific",
                       doc="The tzdata timezone identifier that this user prefers to see.")
     bio = Column(Text)
+    activate_token = Column(String, nullable=False,
+                            default=generate_activate_token(),
+                            doc="Activation token for email verification")
+    verified = Column(Boolean(name="verified"), nullable=False, default=False)
     is_admin = Column(Boolean(name="is_admin"))
     member_since = Column(DateTime, default=datetime.utcnow)
 
@@ -47,3 +52,7 @@ class User(Base, UserMixin, CRUDMixin):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def is_verified(self):
+        " Returns whether a user has verified their email "
+        return self.verified is True

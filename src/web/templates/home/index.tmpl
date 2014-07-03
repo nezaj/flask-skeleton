@@ -1,9 +1,13 @@
 {% extends "shared/layout.tmpl" %}
 
 {% block content %}
-  {% if not current_user.is_anonymous() %}
-      <p>Hello {{ current_user.username|e }}</p>
+  {% if current_user.is_anonymous() %}
+    <p>Please login</p>
+  {% elif not current_user.is_verified() %}
+    <p>
+      Please verify your account by clicking the activation link sent to your email address. Click <a href="{{ url_for('auth.resend_activation_email') }}">here</a> to resend.
+    </p>
   {% else %}
-      <p>Please login</p>
+      <p>Welcome home {{ current_user.username|e }}</p>
   {% endif %}
 {% endblock %}
