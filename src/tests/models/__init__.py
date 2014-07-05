@@ -4,10 +4,10 @@ Generic test class for testing database models
 from unittest import TestCase
 
 from config import TestConfig
-from data.db import db_connect
+from data.db import DatabaseConnection
 from web import create_app
 
-db = db_connect(TestConfig.SQLALCHEMY_DATABASE_URI)
+db = DatabaseConnection(TestConfig.SQLALCHEMY_DATABASE_URI)
 
 class ModelTest(TestCase):
 
