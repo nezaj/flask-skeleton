@@ -1,13 +1,12 @@
-from flask import (Blueprint, current_app, escape, flash,
-                   render_template, redirect, request, url_for)
+from flask import (Blueprint, escape, flash, render_template,
+                   redirect, request, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
-from flask_mail import Message
 
 from data.db import db
-from data.models import User
-from data.util import generate_random_token, get_password_reset_token
+from data.models import User, UserPasswordToken
+from data.util import generate_random_token
 from web.forms.auth import EmailForm, LoginForm, RegistrationForm
-from .util import send_activation_email, send_password_reset_email
+from .util import send_activation, send_password_reset
 
 auth = Blueprint('auth', __name__)
 
@@ -35,9 +34,11 @@ def forgot_password():
     if form.validate_on_submit():
         user = User.find_by_email(db.session, form.email.data)
         if user:
-            reset_token = get_password_reset_token(user)
-            send_password_reset_email(user, reset_token)
-            return render_template("auth/password_token_sent", user_email=user.email)
+            reset_token = UserPasswordToken.get_or_create_token(db.session, user.id).token
+            send_password_reset(user, reset_token)
+            flash("Passowrd reset instructions have been sent to {}. Please check your inbox".format(user.email),
+                  'info')
+            return redirect(url_for("home.index"))
         else:
             flash("We couldn't find an account with that email. Please try again", 'warning')
     return render_template("auth/forgot_password.tmpl", form=form)
@@ -68,7 +69,7 @@ def register():
     if form.validate_on_submit():
         new_user = User.create(db.session, **form.data)
         login_user(new_user)
-        send_activation_email(new_user)
+        send_activation(new_user)
         flash("Thanks for signing up {}. Welcome!".format(escape(new_user.username)), 'info')
         return redirect(url_for('home.index'))
     return render_template("auth/register.tmpl", form=form)
@@ -80,7 +81,21 @@ def resend_activation_email():
         flash("This account has already been activated.", 'warning')
     else:
         current_user.update(db.session, activate_token=generate_random_token())
-        send_activation_email(current_user)
+        send_activation(current_user)
         flash('Activation email sent! Please check your inbox', 'info')
+
+    return redirect(url_for('home.index'))
+
+@auth.route('/reset_password', methods=['GET'])
+def reset_password():
+    userid = request.args.get('userid')
+    reset_token = request.args.get('reset_token')
+
+    user_token = db.session.query(UserPasswordToken).filter_by(token=reset_token).scalar()
+    if user_token and user_token.user_id == userid and user_token.valid:
+        user_token.update(db.session, is_used=True)
+        flash("Success!")
+    else:
+        flash("This token is no longer valid.", 'warning')
 
     return redirect(url_for('home.index'))
