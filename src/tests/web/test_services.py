@@ -1,7 +1,8 @@
-from . import RoutesTest
+# from . import RoutesTest
+import pytest
 
-class ServicesRoutesTest(RoutesTest):
+class TestServices:
 
-    def test_health(self):
-        response = self.client.get('services/health')
-        assert response.status_code == 200
+    def test_health(self, testapp):
+        res = testapp.get('/services/health')
+        assert res.status_code == 200

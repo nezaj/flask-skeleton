@@ -1,10 +1,12 @@
 """
 Tests dashboard endpoints
 """
-from . import RoutesTest
+# from . import RoutesTest
 
-class MainRoutesTest(RoutesTest):
+import pytest
 
-    def test_hello(self):
-        response = self.client.get('/')
-        assert response.status_code == 200
+class TestMain:
+
+    def test_hello(self, testapp):
+        res = testapp.get('/')
+        assert res.status_code == 200

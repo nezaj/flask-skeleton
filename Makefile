@@ -12,7 +12,7 @@ clean:
 
 check:
 	$(MAKE) virtualenv
-	$(MAKE) pylint pep8 nosetests
+	$(MAKE) pylint pep8 pytest
 
 virtualenv:
 	test -d $(VENV_PATH) || virtualenv $(VENV_PATH)
@@ -23,7 +23,6 @@ pep8:
 	$(VENV_ACTIVATE) && \
 	pep8 src/data && \
 	pep8 src/web && \
-	pep8 src/tests && \
 	pep8 src/*.py
 
 pylint:
@@ -31,9 +30,8 @@ pylint:
 	$(VENV_ACTIVATE) && \
     pylint src/data && \
     pylint src/web && \
-    pylint src/tests && \
     PYTHONPATH=src pylint src/*.py
 
-nosetests:
-	@echo "Running nosetests..."
-	$(VENV_ACTIVATE) && nosetests
+pytest:
+	@echo "Running py.test..."
+	$(VENV_ACTIVATE) && py.test src/tests
