@@ -3,8 +3,7 @@
 from setuptools import setup, find_packages
 
 dependencies = [
-    # Get latest packages for test tools
-    "nose>=1.3.2",
+    # Get latest packages for lint tools
     "pep8>=1.5.6",
     "pylint>=1.2.1",
     # Flask and extensions
@@ -16,6 +15,7 @@ dependencies = [
     "flask-script==2.0.5",
     "flask-wtf==0.9.5",
     # Additional packages
+    "pytest==2.5.2",
     "alembic==0.6.3",
     "cssmin==0.2.0",
     "gunicorn==0.17.2",
