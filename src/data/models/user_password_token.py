@@ -12,7 +12,7 @@ from .user import User
 from data.util import generate_random_token
 
 def tomorrow():
-    return datetime.utcnow() + timedelta(seconds=30)
+    return datetime.utcnow() + timedelta(days=1)
 
 class UserPasswordToken(Base, CRUDMixin):
     __tablename__ = 'user_password_tokens'
@@ -21,29 +21,32 @@ class UserPasswordToken(Base, CRUDMixin):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship(User)
     token = Column(String, nullable=False, default=generate_random_token())
-    is_used = Column(Boolean(name="used"), default=False)
+    used = Column(Boolean(name="used"), default=False)
     expiration_dt = Column(DateTime, default=tomorrow())
     expired = expiration_dt < func.now()
 
-    # TODO: This is broken, needs to be fixed
+    @hybrid_property
+    def expired(self):
+        return self.expiration_dt < datetime.utcnow()
+
     @hybrid_property
     def invalid(self):
-        return self.is_used | self.expired
+        return self.used | self.expired
 
     @classmethod
     def invalid_tokens(cls, session, user_id):
         "Returns all invalid tokens for a user. A token is invalid if it has been used or has expired"
-        session.query(cls).filter(cls.user_id == user_id, cls.invalid)
+        return session.query(cls).filter(cls.user_id==user_id, cls.invalid)
 
     @classmethod
     def valid_token(cls, session, user_id):
         "Returns valid token for a user if it exists"
-        session.query(cls).filter(cls.user_id == user_id, ~cls.invalid).scalar()
+        return session.query(cls).filter(cls.user_id == user_id, ~cls.invalid).scalar()
 
     @classmethod
     def get_or_create_token(cls, session, user_id):
         invalid_tokens = UserPasswordToken.invalid_tokens(session, user_id)
         if invalid_tokens:
-            invalid_tokens.delete()
+            invalid_tokens.delete(synchronize_session=False)
         token = UserPasswordToken.valid_token(session, user_id)
         return token if token else UserPasswordToken.create(session, user_id=user_id)
