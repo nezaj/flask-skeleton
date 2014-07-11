@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 
-from sqlalchemy import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
@@ -23,7 +22,6 @@ class UserPasswordToken(Base, CRUDMixin):
     token = Column(String, nullable=False, default=generate_random_token())
     used = Column(Boolean(name="used"), default=False)
     expiration_dt = Column(DateTime, default=tomorrow())
-    expired = expiration_dt < func.now()
 
     @hybrid_property
     def expired(self):
@@ -36,7 +34,7 @@ class UserPasswordToken(Base, CRUDMixin):
     @classmethod
     def invalid_tokens(cls, session, user_id):
         "Returns all invalid tokens for a user. A token is invalid if it has been used or has expired"
-        return session.query(cls).filter(cls.user_id==user_id, cls.invalid)
+        return session.query(cls).filter(cls.user_id == user_id, cls.invalid)
 
     @classmethod
     def valid_token(cls, session, user_id):
