@@ -89,12 +89,13 @@ def resend_activation_email():
 @auth.route('/reset_password', methods=['GET'])
 def reset_password():
     userid = request.args.get('userid')
-    reset_token = request.args.get('reset_token')
+    reset_token_string = request.args.get('reset_token')
 
-    user_token = db.session.query(UserPasswordToken).filter_by(token=reset_token).scalar()
-    if user_token and user_token.user_id == userid and user_token.valid:
-        user_token.update(db.session, is_used=True)
-        flash("Success!")
+    reset_token = db.session.query(UserPasswordToken).filter_by(token=reset_token_string).scalar()
+    user_token = UserPasswordToken.valid_token(db.session, userid)
+    if reset_token and reset_token == user_token:
+        user_token.update(db.session, used=True)
+        flash("Success!", 'info')
     else:
         flash("This token is no longer valid.", 'warning')
 
