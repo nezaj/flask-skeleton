@@ -5,7 +5,7 @@
 
 {% block content %}
   <h3>Log in</h3>
-  <form method="POST">
+  <form method="POST" id='login-form'>
     {{ form.hidden_tag() }}
     {{ render_input_field(form.email) }}
     {{ render_password_field(form.password) }}

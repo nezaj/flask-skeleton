@@ -18,7 +18,7 @@ def activate():
 
     user = db.session.query(User).get(int(userid)) if userid else None
     if user and user.is_verified():
-        flash("This account has already been activated.", 'warning')
+        flash("Your account is already verified.", 'info')
     elif user and user.activate_token == activate_token:
         user.update(db.session, verified=True)
         flash("Thank you for verifying your email. Your account is now activated", 'info')

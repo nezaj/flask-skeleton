@@ -1,8 +1,6 @@
-# from . import RoutesTest
 import pytest
 
 class TestServices:
 
-    def test_health(self, testapp):
-        res = testapp.get('/services/health')
-        assert res.status_code == 200
+    def test_health(self, client):
+        res = client.get('/services/health', status=200)
