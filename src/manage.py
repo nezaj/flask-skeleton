@@ -52,4 +52,5 @@ def test_email():
     with app.app_context():
         mail.send(msg)
 
-manager.run()
+if __name__ == '__main__':
+    manager.run()
