@@ -67,6 +67,12 @@ class TestConfig(Config):
     # Use in-memory test database
     SQLALCHEMY_DATABASE_URI = URL(drivername='sqlite', database=None)
 
+    # For faster testing
+    BCRYPT_LOG_ROUNDS = 1
+
+    # Allows form testing
+    WTF_CSRF_ENABLED = False
+
 class ProductionConfig(Config):
     ENV = 'prod'
 

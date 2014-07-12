@@ -1,15 +1,20 @@
+import pytest
+
 from datetime import datetime, timedelta
 from data.models import User, UserPasswordToken
-from .tools import generate_user
+from ..tools import generate_user
+
+@pytest.fixture
+def user(db):
+    return generate_user().save(db.session)
 
 def expired_date():
     return datetime.utcnow() + timedelta(seconds=-1)
 
 class TestUserPasswordToken:
 
-    def test_used_token_is_not_valid(self, db):
+    def test_used_token_is_not_valid(self, user, db):
         # Newly generated token is valid
-        user = generate_user().save(db.session)
         token = UserPasswordToken(user=user).save(db.session)
         assert token.invalid is False
 
@@ -17,9 +22,8 @@ class TestUserPasswordToken:
         token.update(db.session, used=True)
         assert token.invalid is True
 
-    def test_expired_token_is_not_valid(self, db):
+    def test_expired_token_is_not_valid(self, user, db):
         # Newly generated token is valid
-        user = generate_user().save(db.session)
         token = UserPasswordToken(user=user).save(db.session)
         assert token.invalid is False
 
@@ -28,16 +32,13 @@ class TestUserPasswordToken:
         token.save(db.session)
         assert token.invalid is True
 
-    def test_valid_token(self, db):
+    def test_valid_token(self, user, db):
         # Valid token is found
-        user = generate_user().save(db.session)
         invalid_token = UserPasswordToken(user=user, used=True).save(db.session)
         valid_token = UserPasswordToken(user=user).save(db.session)
         assert UserPasswordToken.valid_token(db.session, user.id) == valid_token
 
-    def test_invalid_tokens(self, db):
-        user = generate_user().save(db.session)
-
+    def test_invalid_tokens(self, user, db):
         # Invalid tokens
         used_token = UserPasswordToken(user=user, used=True).save(db.session)
         expired_token = UserPasswordToken(user=user, expiration_dt=expired_date()).save(db.session)
@@ -49,8 +50,7 @@ class TestUserPasswordToken:
         invalid_tokens = set(UserPasswordToken.invalid_tokens(db.session, user_id=user.id).all())
         assert invalid_tokens == set([used_token, expired_token])
 
-    def test_get_or_create_token(self, db):
-        user = generate_user().save(db.session)
+    def test_get_or_create_token(self, user, db):
         user_tokens_query = db.session.query(UserPasswordToken).filter_by(user_id=user.id)
 
         # No tokens are present for a newly created user

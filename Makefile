@@ -34,4 +34,4 @@ pylint:
 
 pytest:
 	@echo "Running py.test..."
-	$(VENV_ACTIVATE) && py.test src/tests
+	$(VENV_ACTIVATE) && APP_ENV=test py.test src/tests
