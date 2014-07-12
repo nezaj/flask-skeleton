@@ -1,3 +1,6 @@
+"""
+Helper functions used for generating data
+"""
 from data.models import User
 
 def generate_model(cls, cls_attrs):

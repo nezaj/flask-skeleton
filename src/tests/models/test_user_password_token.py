@@ -2,7 +2,7 @@ import pytest
 
 from datetime import datetime, timedelta
 from data.models import User, UserPasswordToken
-from ..tools import generate_user
+from ..generate import generate_user
 
 @pytest.fixture
 def user(db):

@@ -12,7 +12,7 @@ clean:
 
 check:
 	$(MAKE) virtualenv
-	$(MAKE) pylint pep8 pytest
+	$(MAKE) pylint pep8 test
 
 virtualenv:
 	test -d $(VENV_PATH) || virtualenv $(VENV_PATH)
@@ -32,6 +32,6 @@ pylint:
     pylint src/web && \
     PYTHONPATH=src pylint src/*.py
 
-pytest:
+test:
 	@echo "Running py.test..."
 	$(VENV_ACTIVATE) && APP_ENV=test py.test src/tests
