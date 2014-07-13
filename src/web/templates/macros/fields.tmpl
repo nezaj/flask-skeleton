@@ -69,8 +69,6 @@ a paragraph with any field-related errors beneath the field's control.
   {% endwith %}
 {% endmacro %}
 
-{% macro render_submit_field(field) %}
-  <div class="form-group">
-    {{ render_input(field.name, field.label.text, errors=field.errors, type="submit", **kwargs) }}
-  </div>
+{% macro render_submit(cls="btn btn-info") %}
+    <input type="submit" class="{{ cls }}">
 {% endmacro %}

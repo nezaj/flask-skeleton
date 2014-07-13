@@ -1,4 +1,4 @@
-{% from "macros/fields.tmpl" import render_input_field, render_password_field, render_checkbox_field %}
+{% from "macros/fields.tmpl" import render_input_field, render_password_field, render_checkbox_field, render_submit %}
 {% extends "shared/layout.tmpl" %}
 
 {% block title %}Login{% endblock %}
@@ -10,7 +10,7 @@
     {{ render_input_field(form.email) }}
     {{ render_password_field(form.password) }}
     {{ render_checkbox_field(form.remember_me) }}
-    <input type="submit" class="btn btn-info">
+    {{ render_submit() }}
   </form>
   <br>
   <a href="{{ url_for('auth.forgot_password') }}">Forgot password?</a>
