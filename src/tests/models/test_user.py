@@ -54,6 +54,11 @@ class TestUser:
         u2.username = "jane"
         u2.save(db.session)
 
+    def test_activate_tokens_unique(self, db):
+        u1 = generate_user(email="bob@example.com", username='bob').save(db.session)
+        u2 = generate_user(email="jane@example.com", username='jane').save(db.session)
+        assert u1.activate_token != u2.activate_token
+
     def test_find_by_email(self, db):
         email = "bob@example.com"
         u1 = generate_user(email=email)

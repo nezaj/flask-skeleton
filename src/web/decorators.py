@@ -24,6 +24,6 @@ def reset_token_required(f):
         if reset_token and reset_token == user_token:
             return f(userid, user_token)
         elif reset_token:
-            flash("This token is no longer valid.", 'warning')
+            flash("This token is no longer valid. Please log in or request a new email to be sent", 'warning')
         return redirect(url_for('home.index'))
     return wrapper

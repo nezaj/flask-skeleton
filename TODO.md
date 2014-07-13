@@ -1,10 +1,9 @@
 Action
 =======================
-* Make sure generated tokens are unique
+* Simplify directory structure, consider declarative approach
 
 Backlog
 =======================
-* Simplify directory structure, consider declarative approach
 * Switch to Flask-SQLAlchemy and Flask-Migrate
 * Create populate function for adding sample users
 * Add custom 404 error handler

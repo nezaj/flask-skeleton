@@ -76,3 +76,8 @@ class TestUserPasswordToken:
         assert unexpired_token != token
         assert unexpired_token != unused_token
         assert user_tokens_query.count() == 1
+
+    def test_token_values_unique(self, user, db):
+        first = UserPasswordToken(user=user).save(db.session)
+        second = UserPasswordToken(user=user).save(db.session)
+        assert first.value != second.value

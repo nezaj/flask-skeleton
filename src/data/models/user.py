@@ -27,11 +27,17 @@ class User(Base, UserMixin, CRUDMixin):
                       doc="The tzdata timezone identifier that this user prefers to see.")
     bio = Column(Text)
     activate_token = Column(String, nullable=False,
-                            default=generate_random_token(),
                             doc="Activation token for email verification")
     verified = Column(Boolean(name="verified"), nullable=False, default=False)
     is_admin = Column(Boolean(name="is_admin"))
     member_since = Column(DateTime, default=datetime.utcnow)
+
+    # Use custom constructor
+    # pylint: disable=W0231
+    def __init__(self, **kwargs):
+        for k, v in kwargs.iteritems():
+            setattr(self, k, v)
+        self.activate_token = generate_random_token()
 
     @staticmethod
     def find_by_email(session, email):
