@@ -16,6 +16,7 @@ dependencies = [
     "flask-wtf==0.9.5",
     # Additional packages
     "pytest==2.5.2",
+    "webtest==2.0.15",
     "alembic==0.6.3",
     "cssmin==0.2.0",
     "gunicorn==0.17.2",
