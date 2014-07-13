@@ -17,10 +17,10 @@ def send_activation(new_user):
     failure = "Activation email failed to send to {}".format(new_user.email)
     send_async_email(app, msg, success, failure)
 
-def send_password_reset(user, reset_token):
+def send_password_reset(user, reset_value):
     current_app.logger.info("Begin sending password resend email to {}...".format(user.email))
 
-    reset_link = url_for('auth.reset_password', userid=user.id, reset_token=reset_token, _external=True)
+    reset_link = url_for('auth.reset_password', userid=user.id, value=reset_value, _external=True)
 
     msg = Message(subject="Reset your password", recipients=[user.email])
     msg.body = render_template('email/password_reset.txt', reset_link=reset_link)

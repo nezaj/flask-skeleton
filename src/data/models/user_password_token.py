@@ -19,7 +19,7 @@ class UserPasswordToken(Base, CRUDMixin):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship(User)
-    value = Column(String, nullable=False, default=generate_random_token())
+    value = Column(String, nullable=False, default=generate_random_token(), index=True)
     used = Column(Boolean(name="used"), default=False)
     expiration_dt = Column(DateTime, default=tomorrow())
 

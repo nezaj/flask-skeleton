@@ -2,7 +2,7 @@ import re
 
 from flask_wtf import Form
 from wtforms.fields import BooleanField, TextField, PasswordField
-from wtforms.validators import Email, InputRequired, Length
+from wtforms.validators import EqualTo, Email, InputRequired, Length
 
 from data.db import db
 from data.models import User
@@ -18,11 +18,11 @@ def username_is_available(username):
         return True
     return not User.find_by_username(db.session, username)
 
-def username_is_safe(username):
-    " Only letters (a-z) and  numbers are allowed in usernames. Based off Google username validator "
-    if not username:
+def safe_characters(s):
+    " Only letters (a-z) and  numbers are allowed for usernames and passwords. Based off Google username validator "
+    if not s:
         return True
-    return re.match(r'^[\w]+$', username) is not None
+    return re.match(r'^[\w]+$', s) is not None
 
 class EmailForm(Form):
     email = TextField('Email Address', validators=[
@@ -37,9 +37,19 @@ class LoginForm(EmailForm):
 
     remember_me = BooleanField('Keep me logged in')
 
+class ResetPasswordForm(Form):
+    password = PasswordField('New password', validators=[
+        EqualTo('confirm', message='Passwords must match'),
+        Predicate(safe_characters, message="Please use only letters (a-z) and numbers"),
+        Length(min=6, max=30, message="Please use between 6 and 30 characters"),
+        InputRequired(message="You can't leave this empty")
+    ])
+
+    confirm = PasswordField('Repeat password')
+
 class RegistrationForm(Form):
     username = TextField('Choose your username', validators=[
-        Predicate(username_is_safe, message="Please use only letters (a-z) and numbers"),
+        Predicate(safe_characters, message="Please use only letters (a-z) and numbers"),
         Predicate(username_is_available,
                   message="An account has already been registered with that username. Try another?"),
         Length(min=6, max=30, message="Please use between 6 and 30 characters"),
@@ -53,6 +63,7 @@ class RegistrationForm(Form):
     ])
 
     password = PasswordField('Create a password', validators=[
+        Predicate(safe_characters, message="Please use only letters (a-z) and numbers"),
         Length(min=6, max=30, message="Please use between 6 and 30 characters"),
         InputRequired(message="You can't leave this empty")
     ])

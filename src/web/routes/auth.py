@@ -5,7 +5,8 @@ from flask_login import current_user, login_required, login_user, logout_user
 from data.db import db
 from data.models import User, UserPasswordToken
 from data.util import generate_random_token
-from web.forms.auth import EmailForm, LoginForm, RegistrationForm
+from web.decorators import reset_token_required
+from web.forms.auth import ResetPasswordForm, EmailForm, LoginForm, RegistrationForm
 from .util import send_activation, send_password_reset
 
 auth = Blueprint('auth', __name__)
@@ -86,17 +87,14 @@ def resend_activation_email():
 
     return redirect(url_for('home.index'))
 
-@auth.route('/reset_password', methods=['GET'])
-def reset_password():
-    userid = request.args.get('userid')
-    value = request.args.get('value')
-
-    reset_token = db.session.query(UserPasswordToken).filter_by(value=value).scalar()
-    user_token = UserPasswordToken.valid_token(db.session, userid)
-    if reset_token and reset_token == user_token:
+@auth.route('/reset_password', methods=['GET', 'POST'])
+@reset_token_required
+def reset_password(userid, user_token):
+    user = db.session.query(User).get(userid)
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.update(db.session, password=form.password.data)
         user_token.update(db.session, used=True)
-        flash("Success!", 'info')
-    else:
-        flash("This token is no longer valid.", 'warning')
-
-    return redirect(url_for('home.index'))
+        flash("Password updated! Please log in to your account", "info")
+        return redirect(url_for('home.index'))
+    return render_template("auth/reset_password.tmpl", form=form)

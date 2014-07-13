@@ -122,9 +122,10 @@ class TestAuth:
         assert res.forms.get('reset-form')
 
         # Password is changed on form submit
-        res.forms.get("reset-form")['password'] = 'joejoe'
-        res.forms.get("reset-form")['confirm-password'] = 'joejoe'
-        res.forms.get("reset-form").submit()
+        reset_form = res.forms.get('reset-form')
+        reset_form['password'] = 'joejoe'
+        reset_form['confirm'] = 'joejoe'
+        reset_form.submit()
         assert user.verify_password('joejoe')
 
         # User has no more valid UserPasswordToken
