@@ -57,6 +57,7 @@ class DevelopmentConfig(Config):
 
 class TestConfig(Config):
     ENV = 'test'
+    TESTING = True
 
     # Dummy secret key for running tests
     SECRET_KEY = 'test'
