@@ -8,7 +8,7 @@ from sqlalchemy.types import Boolean, Integer, String, DateTime
 from .base import Base
 from .mixins import CRUDMixin
 from .user import User
-from data.util import generate_random_token
+from ..util import generate_random_token
 
 def tomorrow():
     return datetime.utcnow() + timedelta(days=1)

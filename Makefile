@@ -20,18 +20,12 @@ virtualenv:
 
 pep8:
 	@echo "Running pep8..."
-	$(VENV_ACTIVATE) && \
-	pep8 src/data && \
-	pep8 src/web && \
-	pep8 src/*.py
+	$(VENV_ACTIVATE) && pep8 src
 
 pylint:
 	@echo "Running pylint..."
-	$(VENV_ACTIVATE) && \
-    pylint src/data && \
-    pylint src/web && \
-    PYTHONPATH=src pylint src/*.py
+	$(VENV_ACTIVATE) && pylint src
 
 test:
 	@echo "Running py.test..."
-	$(VENV_ACTIVATE) && APP_ENV=test py.test src/tests
+	$(VENV_ACTIVATE) && APP_ENV=test py.test test --tb=short

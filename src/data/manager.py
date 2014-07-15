@@ -9,7 +9,7 @@ Commands:
 """
 from flask_script import Manager, prompt_bool
 
-from data.db import db
+from .db import db
 
 manager = Manager(usage="Perform database operations")
 

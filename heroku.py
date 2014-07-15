@@ -14,7 +14,7 @@ def import_env():
 
 import_env()
 
-from web import create_app
-from config import app_config
+from src.app import create_app
+from src.settings import app_config
 
 flask_app = create_app(app_config)

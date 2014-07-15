@@ -9,7 +9,6 @@ flask-script==2.0.5
 flask-wtf==0.9.5
 pytest==2.5.2
 webtest==2.0.15
-alembic==0.6.3
 cssmin==0.2.0
 gunicorn==0.17.2
 psycopg2==2.5.2

@@ -4,9 +4,7 @@ Helper functions for configuring loggers.
 
 import logging
 
-# Disable relative import warning, Heroku won't discover src.config
-# pylint: disable=W0403
-from config import app_config
+from .settings import app_config
 
 def configure_sqlalchemy_logger(format_string, level):
     logger = logging.getLogger('sqlalchemy.engine')

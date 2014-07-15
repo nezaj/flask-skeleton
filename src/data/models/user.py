@@ -7,8 +7,8 @@ from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 
 from .base import Base
 from .mixins import CRUDMixin
-from config import app_config
-from data.util import generate_random_token
+from src.settings import app_config
+from ..util import generate_random_token
 
 class User(Base, UserMixin, CRUDMixin):
     __tablename__ = 'users'
