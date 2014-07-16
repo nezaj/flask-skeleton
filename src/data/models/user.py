@@ -1,14 +1,14 @@
 from datetime import datetime
 
 from flask_login import UserMixin
-from flask_bcrypt import generate_password_hash, check_password_hash
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 
 from .base import Base
 from .mixins import CRUDMixin
-from src.settings import app_config
 from ..util import generate_random_token
+from ...settings import app_config
+from ...extensions import bcrypt
 
 class User(Base, UserMixin, CRUDMixin):
     __tablename__ = 'users'
@@ -54,10 +54,10 @@ class User(Base, UserMixin, CRUDMixin):
 
     @password.setter
     def password(self, password):
-        self.password_hash = generate_password_hash(password, app_config.BCRYPT_LOG_ROUNDS)
+        self.password_hash = bcrypt.generate_password_hash(password, app_config.BCRYPT_LOG_ROUNDS)
 
     def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
 
     def is_verified(self):
         " Returns whether a user has verified their email "

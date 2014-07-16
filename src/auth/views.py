@@ -2,12 +2,13 @@ from flask import (Blueprint, escape, flash, render_template,
                    redirect, request, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
 
+from .forms import ResetPasswordForm, EmailForm, LoginForm, RegistrationForm
 from ..data.db import db
 from ..data.models import User, UserPasswordToken
 from ..data.util import generate_random_token
 from ..decorators import reset_token_required
 from ..email import send_activation, send_password_reset
-from .forms import ResetPasswordForm, EmailForm, LoginForm, RegistrationForm
+from ..extensions import login_manager
 
 bp = Blueprint('auth', __name__)
 
@@ -43,6 +44,11 @@ def forgot_password():
         else:
             flash("We couldn't find an account with that email. Please try again", 'warning')
     return render_template("auth/forgot_password.tmpl", form=form)
+
+@login_manager.user_loader
+def load_user(userid):  # pylint: disable=W0612
+    "Register callback for loading users from session"
+    return db.session.query(User).get(int(userid))
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
