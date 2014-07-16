@@ -78,6 +78,13 @@ class TestUserPasswordToken:
         assert user_tokens_query.count() == 1
 
     def test_token_values_unique(self, user, db):
-        first = UserPasswordToken(user=user).save(db.session)
-        second = UserPasswordToken(user=user).save(db.session)
-        assert first.value != second.value
+        # Tokens have different values
+        t1 = UserPasswordToken(user=user).save(db.session)
+        t2 = UserPasswordToken(user=user).save(db.session)
+        assert t1.value != t2.value
+
+    def test_unique_expiration_dt(self, user, db):
+        # Tokens created at different times have different expiration dates
+        t1 = UserPasswordToken(user=user).save(db.session)
+        t2 = UserPasswordToken(user=user).save(db.session)
+        assert t1.expiration_dt != t2.expiration_dt

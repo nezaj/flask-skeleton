@@ -35,9 +35,9 @@ class User(Base, UserMixin, CRUDMixin):
     # Use custom constructor
     # pylint: disable=W0231
     def __init__(self, **kwargs):
+        self.activate_token = generate_random_token()
         for k, v in kwargs.iteritems():
             setattr(self, k, v)
-        self.activate_token = generate_random_token()
 
     @staticmethod
     def find_by_email(session, email):

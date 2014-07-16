@@ -21,14 +21,15 @@ class UserPasswordToken(Base, CRUDMixin):
     user = relationship(User)
     value = Column(String, nullable=False, index=True)
     used = Column(Boolean(name="used"), default=False)
-    expiration_dt = Column(DateTime, default=tomorrow())
+    expiration_dt = Column(DateTime)
 
     # Use custom constructor
     # pylint: disable=W0231
     def __init__(self, **kwargs):
+        self.expiration_dt = tomorrow()
+        self.value = generate_random_token()
         for k, v in kwargs.iteritems():
             setattr(self, k, v)
-        self.value = generate_random_token()
 
     @hybrid_property
     def expired(self):
