@@ -5,6 +5,8 @@ VENV_NAME = flask-skeleton
 VENV_PATH = ~/.virtualenvs/$(VENV_NAME)
 VENV_ACTIVATE = . $(VENV_PATH)/bin/activate
 
+.PHONY: clean check virtualenv pep8 pylint test
+
 clean:
 	find . -name "*.pyc" -print -delete
 	find . \( -name "*.min.js" -o -name "*.min.css" \) -print -delete
