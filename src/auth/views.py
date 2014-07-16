@@ -7,7 +7,7 @@ from ..data.db import db
 from ..data.models import User, UserPasswordToken
 from ..data.util import generate_random_token
 from ..decorators import reset_token_required
-from ..email import send_activation, send_password_reset
+from ..emails import send_activation, send_password_reset
 from ..extensions import login_manager
 
 bp = Blueprint('auth', __name__)
