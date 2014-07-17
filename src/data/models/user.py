@@ -1,8 +1,6 @@
-from datetime import datetime
-
 from flask_login import UserMixin
 from sqlalchemy.schema import Column
-from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
+from sqlalchemy.types import Boolean, Integer, String
 
 from ..db import db
 from ..mixins import CRUDModel
@@ -14,23 +12,11 @@ class User(CRUDModel, UserMixin):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    email = Column(String(64),
-                   nullable=False, unique=True, index=True,
-                   doc="The user's email address.")
-    username = Column(String(64),
-                      nullable=False, unique=True, index=True,
-                      doc="The user's username.")
+    activate_token = Column(String, nullable=False, doc="Activation token for email verification")
+    email = Column(String(64), nullable=False, unique=True, index=True, doc="The user's email address.")
     password_hash = Column(String(128))
-    name = Column(String(64), index=True,
-                  doc="The user's full name.")
-    timezone = Column(String, nullable=False, server_default="US/Pacific",
-                      doc="The tzdata timezone identifier that this user prefers to see.")
-    bio = Column(Text)
-    activate_token = Column(String, nullable=False,
-                            doc="Activation token for email verification")
+    username = Column(String(64), nullable=False, unique=True, index=True, doc="The user's username.")
     verified = Column(Boolean(name="verified"), nullable=False, default=False)
-    is_admin = Column(Boolean(name="is_admin"))
-    member_since = Column(DateTime, default=datetime.utcnow)
 
     # Use custom constructor
     # pylint: disable=W0231

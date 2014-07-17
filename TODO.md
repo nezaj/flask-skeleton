@@ -1,6 +1,5 @@
 Action
 =======================
-* Switch to Flask-SQLAlchemy and Flask-Migrate
 
 Backlog
 =======================
