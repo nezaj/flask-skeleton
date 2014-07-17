@@ -32,41 +32,41 @@ class TestUser:
         email = "bob@example.com"
         u1 = generate_user(email=email, username="bob")
         u2 = generate_user(email=email, username="jane")
-        u1.save(db.session)
+        u1.save()
         with pytest.raises(IntegrityError):
-            u2.save(db.session)
+            u2.save()
 
         # This should be fine
         db.session.rollback()
         u2.email = "jane@example.com"
-        u2.save(db.session)
+        u2.save()
 
     def test_usernames_unique(self, db):
         "Two users saved with same username should raise an error"
         username= "bob"
         u1 = generate_user(email="bob@example.com", username=username)
         u2 = generate_user(email="jane@example.com", username=username)
-        u1.save(db.session)
+        u1.save()
         with pytest.raises(IntegrityError):
-            u2.save(db.session)
+            u2.save()
 
         db.session.rollback()
         u2.username = "jane"
-        u2.save(db.session)
+        u2.save()
 
     def test_activate_tokens_unique(self, db):
-        u1 = generate_user(email="bob@example.com", username='bob').save(db.session)
-        u2 = generate_user(email="jane@example.com", username='jane').save(db.session)
+        u1 = generate_user(email="bob@example.com", username='bob').save()
+        u2 = generate_user(email="jane@example.com", username='jane').save()
         assert u1.activate_token != u2.activate_token
 
     def test_find_by_email(self, db):
         email = "bob@example.com"
         u1 = generate_user(email=email)
-        u1.save(db.session)
+        u1.save()
         assert User.find_by_email(db.session, email) == u1
 
     def test_find_by_username(self, db):
         username = "bob"
         u1 = generate_user(username=username)
-        u1.save(db.session)
+        u1.save()
         assert User.find_by_username(db.session, username) == u1

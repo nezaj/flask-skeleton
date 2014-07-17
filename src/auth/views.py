@@ -74,7 +74,7 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        new_user = User.create(db.session, **form.data)
+        new_user = User.create(**form.data)
         login_user(new_user)
         send_activation(new_user)
         flash("Thanks for signing up {}. Welcome!".format(escape(new_user.username)), 'info')

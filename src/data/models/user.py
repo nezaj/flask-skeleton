@@ -4,8 +4,8 @@ from flask_login import UserMixin
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 
-from .base import Base
-from .mixins import CRUDMixin
+from ..base import Base
+from ..mixins import CRUDMixin
 from ..util import generate_random_token
 from ...settings import app_config
 from ...extensions import bcrypt

@@ -19,7 +19,7 @@ class TestUserPasswordToken:
         assert token.invalid is False
 
         # Used token is not valid
-        token.update(db.session, used=True)
+        token.update(used=True)
         assert token.invalid is True
 
     def test_expired_token_is_not_valid(self, user, db):
@@ -28,7 +28,7 @@ class TestUserPasswordToken:
         assert token.invalid is False
 
         # Expired token is not valid
-        token.update(db.session, expiration_dt=expired_date())
+        token.update(expiration_dt=expired_date())
         token.save(db.session)
         assert token.invalid is True
 
@@ -65,13 +65,13 @@ class TestUserPasswordToken:
         assert user_tokens_query.count() == 1
 
         # A new token is created once the old one is used. This new token is the only token for that user.
-        token.update(db.session, used=True)
+        token.update(used=True)
         unused_token = UserPasswordToken.get_or_create_token(db.session, user.id)
         assert unused_token != token
         assert user_tokens_query.count() == 1
 
         # A new token is created once the old one is expired. This new token is the only token for that user.
-        unused_token.update(db.session, expiration_dt=expired_date())
+        unused_token.update(expiration_dt=expired_date())
         unexpired_token = UserPasswordToken.get_or_create_token(db.session, user.id)
         assert unexpired_token != token
         assert unexpired_token != unused_token

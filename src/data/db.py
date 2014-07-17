@@ -2,8 +2,8 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+from .base import Base, BaseQuery
 from ..settings import app_config
-from .models.base import Base, BaseQuery
 
 class DatabaseConnection(object):
     " A database connection "

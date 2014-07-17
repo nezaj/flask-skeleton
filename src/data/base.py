@@ -2,7 +2,7 @@ from sqlalchemy.orm import Query
 from sqlalchemy.schema import MetaData
 from sqlalchemy.ext.declarative import declarative_base
 
-from ..pagination import Pagination
+from .pagination import Pagination
 
 class BaseModel(object):
     """

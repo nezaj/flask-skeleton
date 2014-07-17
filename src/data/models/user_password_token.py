@@ -5,9 +5,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Boolean, Integer, String, DateTime
 
-from .base import Base
-from .mixins import CRUDMixin
 from .user import User
+from ..base import Base
+from ..mixins import CRUDMixin
 from ..util import generate_random_token
 
 def tomorrow():
