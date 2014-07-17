@@ -26,6 +26,7 @@ from flask_script.commands import ShowUrls
 
 from src.app import create_app
 from src.settings import app_config
+from src.data.base import Base
 from src.data.db import db
 from src.data.manager import manager as database_manager
 from src.data import models
@@ -38,8 +39,8 @@ manager.add_command("routes", ShowUrls())
 
 @manager.shell
 def make_context_shell():
-    # Loads Base and all the models which inherit from Base
-    models_map = {name: cls for name, cls in models.__dict__.items() if isinstance(cls, type(models.Base))}
+    # Loads all the models which inherit from Base
+    models_map = {name: cls for name, cls in models.__dict__.items() if isinstance(cls, type(Base))}
     return dict(app=app, db=db, **models_map)
 
 @manager.command

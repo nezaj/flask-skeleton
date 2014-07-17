@@ -6,18 +6,16 @@ from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Boolean, Integer, String, DateTime
 
 from .user import User
-from ..base import Base
 from ..db import db
-from ..mixins import CRUDMixin
+from ..mixins import CRUDModel
 from ..util import generate_random_token
 
 def tomorrow():
     return datetime.utcnow() + timedelta(days=1)
 
-class UserPasswordToken(Base, CRUDMixin):
+class UserPasswordToken(CRUDModel):
     __tablename__ = 'user_password_tokens'
 
-    id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship(User)
     value = Column(String, nullable=False, index=True)

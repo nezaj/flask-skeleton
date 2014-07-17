@@ -4,7 +4,6 @@ from flask_wtf import Form
 from wtforms.fields import BooleanField, TextField, PasswordField
 from wtforms.validators import EqualTo, Email, InputRequired, Length
 
-from ..data.db import db
 from ..data.models import User
 from ..fields import Predicate
 
