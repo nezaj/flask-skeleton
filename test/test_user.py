@@ -63,10 +63,10 @@ class TestUser:
         email = "bob@example.com"
         u1 = generate_user(email=email)
         u1.save()
-        assert User.find_by_email(db.session, email) == u1
+        assert User.find_by_email(email) == u1
 
     def test_find_by_username(self, db):
         username = "bob"
         u1 = generate_user(username=username)
         u1.save()
-        assert User.find_by_username(db.session, username) == u1
+        assert User.find_by_username(username) == u1

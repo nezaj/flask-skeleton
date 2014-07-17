@@ -5,6 +5,7 @@ from sqlalchemy.schema import Column
 from sqlalchemy.types import Boolean, Integer, String, Text, DateTime
 
 from ..base import Base
+from ..db import db
 from ..mixins import CRUDMixin
 from ..util import generate_random_token
 from ...settings import app_config
@@ -40,12 +41,12 @@ class User(Base, UserMixin, CRUDMixin):
             setattr(self, k, v)
 
     @staticmethod
-    def find_by_email(session, email):
-        return session.query(User).filter_by(email=email).scalar()
+    def find_by_email(email):
+        return db.session.query(User).filter_by(email=email).scalar()
 
     @staticmethod
-    def find_by_username(session, username):
-        return session.query(User).filter_by(username=username).scalar()
+    def find_by_username(username):
+        return db.session.query(User).filter_by(username=username).scalar()
 
     # pylint: disable=R0201
     @property

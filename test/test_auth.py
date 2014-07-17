@@ -10,7 +10,7 @@ from .util import fill_register_form, login_el, logout_el
 
 @pytest.fixture(scope='function')
 def user(db):
-    return generate_user(email="mock@example.com", password="mock").save(db.session)
+    return generate_user(email="mock@example.com", password="mock").save()
 
 class TestAuth:
 
@@ -55,7 +55,7 @@ class TestAuth:
         assert not res.forms.get('register-form')
 
         # Registered user persists in the database
-        assert User.find_by_email(db.session, user.email)
+        assert User.find_by_email(user.email)
 
         # Cannot register same user twice. Register-form should still be displayed
         res = client.get(url_for('auth.register'), status=200)
@@ -70,7 +70,7 @@ class TestAuth:
         res = form.submit().follow()
 
         # Registered user is not verified
-        user = User.find_by_email(db.session, user.email)
+        user = User.find_by_email(user.email)
         assert not user.verified
 
         # Activate token is created for registered user
@@ -86,7 +86,7 @@ class TestAuth:
 
     def test_forgot_password(self, client, db, user):
         # User has no valid reset tokens initially
-        assert not UserPasswordToken.valid_token(db.session, user.id)
+        assert not UserPasswordToken.valid_token(user.id)
 
         # Go to forgot password page
         res = client.get(url_for('auth.forgot_password'), status=200)
@@ -102,7 +102,7 @@ class TestAuth:
         assert not res.forms.get('forgot-form')
 
         # User now has a valid UserPasswordToken
-        assert UserPasswordToken.valid_token(db.session, user.id)
+        assert UserPasswordToken.valid_token(user.id)
 
     def test_reset_password(self, client, db, user):
         # Requests password reset
@@ -110,7 +110,7 @@ class TestAuth:
                           dict(email=user.email)).follow()
 
         # User has valid UserPasswordToken
-        valid_token = UserPasswordToken.valid_token(db.session, user.id)
+        valid_token = UserPasswordToken.valid_token(user.id)
         assert valid_token
 
         # Invalid user/token combo does not display reset form
@@ -129,7 +129,7 @@ class TestAuth:
         assert user.verify_password('joejoe')
 
         # User has no more valid UserPasswordToken
-        assert not UserPasswordToken.valid_token(db.session, user.id)
+        assert not UserPasswordToken.valid_token(user.id)
 
         # Previous valid token no longer works. Does not display reset form
         res = client.get(url_for('auth.reset_password', userid=user.id, value=valid_token.value))

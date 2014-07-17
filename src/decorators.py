@@ -20,7 +20,7 @@ def reset_token_required(f):
         value = request.args.get('value')
 
         reset_token = db.session.query(UserPasswordToken).filter_by(value=value).scalar()
-        user_token = UserPasswordToken.valid_token(db.session, userid)
+        user_token = UserPasswordToken.valid_token(userid)
         if reset_token and reset_token == user_token:
             return f(userid, user_token)
         elif reset_token:

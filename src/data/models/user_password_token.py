@@ -7,6 +7,7 @@ from sqlalchemy.types import Boolean, Integer, String, DateTime
 
 from .user import User
 from ..base import Base
+from ..db import db
 from ..mixins import CRUDMixin
 from ..util import generate_random_token
 
@@ -40,19 +41,19 @@ class UserPasswordToken(Base, CRUDMixin):
         return self.used | self.expired
 
     @classmethod
-    def invalid_tokens(cls, session, user_id):
+    def invalid_tokens(cls, user_id):
         "Returns all invalid tokens for a user. A token is invalid if it has been used or has expired"
-        return session.query(cls).filter(cls.user_id == user_id, cls.invalid)
+        return db.session.query(cls).filter(cls.user_id == user_id, cls.invalid)
 
     @classmethod
-    def valid_token(cls, session, user_id):
+    def valid_token(cls, user_id):
         "Returns valid token for a user if it exists"
-        return session.query(cls).filter(cls.user_id == user_id, ~cls.invalid).scalar()
+        return db.session.query(cls).filter(cls.user_id == user_id, ~cls.invalid).scalar()
 
     @classmethod
-    def get_or_create_token(cls, session, user_id):
-        invalid_tokens = UserPasswordToken.invalid_tokens(session, user_id)
+    def get_or_create_token(cls, user_id):
+        invalid_tokens = UserPasswordToken.invalid_tokens(user_id)
         if invalid_tokens:
             invalid_tokens.delete(synchronize_session=False)
-        token = UserPasswordToken.valid_token(session, user_id)
-        return token if token else UserPasswordToken.create(session, user_id=user_id)
+        token = UserPasswordToken.valid_token(user_id)
+        return token if token else UserPasswordToken.create(user_id=user_id)

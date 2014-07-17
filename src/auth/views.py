@@ -22,7 +22,7 @@ def activate():
     if user and user.is_verified():
         flash("Your account is already verified.", 'info')
     elif user and user.activate_token == activate_token:
-        user.update(db.session, verified=True)
+        user.update(verified=True)
         flash("Thank you for verifying your email. Your account is now activated", 'info')
         return redirect(url_for('public.index'))
     else:
@@ -34,9 +34,9 @@ def activate():
 def forgot_password():
     form = EmailForm()
     if form.validate_on_submit():
-        user = User.find_by_email(db.session, form.email.data)
+        user = User.find_by_email(form.email.data)
         if user:
-            reset_value = UserPasswordToken.get_or_create_token(db.session, user.id).value
+            reset_value = UserPasswordToken.get_or_create_token(user.id).value
             send_password_reset(user, reset_value)
             flash("Passowrd reset instructions have been sent to {}. Please check your inbox".format(user.email),
                   'info')
@@ -54,7 +54,7 @@ def load_user(userid):  # pylint: disable=W0612
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.find_by_email(db.session, form.email.data)
+        user = User.find_by_email(form.email.data)
         if user and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             flash("Logged in successfully", "info")
@@ -87,7 +87,7 @@ def resend_activation_email():
     if current_user.is_verified():
         flash("This account has already been activated.", 'warning')
     else:
-        current_user.update(db.session, activate_token=generate_random_token())
+        current_user.update(activate_token=generate_random_token())
         send_activation(current_user)
         flash('Activation email sent! Please check your inbox', 'info')
 
@@ -99,8 +99,8 @@ def reset_password(userid, user_token):
     user = db.session.query(User).get(userid)
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        user.update(db.session, password=form.password.data)
-        user_token.update(db.session, used=True)
+        user.update(password=form.password.data)
+        user_token.update(used=True)
         flash("Password updated! Please log in to your account", "info")
         return redirect(url_for('public.index'))
     return render_template("auth/reset_password.tmpl", form=form)

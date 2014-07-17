@@ -11,12 +11,12 @@ from ..fields import Predicate
 def email_is_available(email):
     if not email:
         return True
-    return not User.find_by_email(db.session, email)
+    return not User.find_by_email(email)
 
 def username_is_available(username):
     if not username:
         return True
-    return not User.find_by_username(db.session, username)
+    return not User.find_by_username(username)
 
 def safe_characters(s):
     " Only letters (a-z) and  numbers are allowed for usernames and passwords. Based off Google username validator "
