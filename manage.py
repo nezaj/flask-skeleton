@@ -8,7 +8,7 @@ Commands:
 - runserver <args>  : Runs the Flask development server. Accepts additional args like host and port
 - shell             : Loads an interactive python shell with app, db, and models imported
 - routes            : Shows all registered routes
-- db <command>      : Runs database commands. See data/manager.py for more details
+- db <command>      : Runs database migrations commands. Type ./manage.py db --help for more info
 """
 def import_env():
     import os
