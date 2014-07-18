@@ -29,7 +29,6 @@ from src.app import create_app
 from src.settings import app_config
 from src.data.base import Base
 from src.data.database import db
-from src.data.manager import manager as database_manager
 from src.data import models
 
 app = create_app(app_config)
