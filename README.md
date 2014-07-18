@@ -1,15 +1,6 @@
 ## [Flask Skeleton][flask-skeleton]
 Flask Skeleton provides a base structure for a medium-sized Flask app. This incorporates several Flask best practices and is my default setup for whenever I create a new Flask project. This was built and tested with Python 2.
 
-* [Overview](#overview)
-* [Quickstart](#quickstart)
-* [Installing](#installing)
-* [Preparing a database](#preparing-a-database)
-* [Running](#running)
-* [Tests](#tests)
-* [Configuration](#configuration)
-
-### Overview
 Here's the stuff you get right off the bat when using Flask-Skeleton:
 * Asset concatenation and minification ([Alembic][alembic] and [Flask-Assets][flask-assets])
 * Database migrations support ([Flask-Migrate][flask-Migrate])
@@ -19,6 +10,16 @@ Here's the stuff you get right off the bat when using Flask-Skeleton:
 * Python static analysis tools ([pylint][pylint] and [pep8][pep8])
 * Secure user authentication with password hashing ([Flask-Login][flask-login] and [Flask-Bcrypt][flask-bcrypt])
 * User email activation and password recovery
+
+### Table of contents
+* [Quickstart](#quickstart)
+* [Installing](#installing)
+* [Preparing a database](#preparing-a-database)
+* [Environment variables](#environment-variables)
+* [Running](#running)
+* [Tests](#tests)
+* [Migrations](#migrations)
+* [Additional configuration](#additional-configuration)
 
 ### Quickstart
 Because sometimes you just want to see it work
@@ -57,10 +58,26 @@ workon flask-skeleton
 If you ever need to upgrade it or install packages which appeared since your last run, just run `make virtualenv` again.
 
 ### Preparing a database
-You need to pick a database to run the app against. By default, the development configuration points to a local SQLlite database `dev.db` located at the project root. You can create this database via `./manage.py db upgrade`.
+You need to pick a database to run the app against. By default, the development configuration points to a local SQLlite database `dev.db` located at the top level directory. Run the following to create the database
+```
+./manage.py db upgrade
+```
+
+### Environment variables
+Most of the app configuration is defined in the [settings][settings] module. However, some necessary but sensitive configuration settings like secret keys, emails, and production database URIs are not (and should not) be part of source control. Instead, we import these settings from another file and create environment variables at run time. Flask Skeleton will look for key-value pairs (in the form of `KEY=VALUE`) defined in the `.env` file at the top level directory. The `.env` file should not be part of source control and included in our `.gitignore`.
+
+At a minimum, we must define an `APP_KEY` variable which will be used as the [secret key][secret-key] for signing cookies in our application. We can create the `.env` file and a random value for `APP_KEY` in one go
+```
+python -c 'import os; print "APP_KEY={}".format(os.urandom(24))' > .env
+```
+
+To specify additional key-value pairs, add them on separate lines in your newly generated `.env` file. These will be imported whenever you run a `/.manage` command.
 
 ### Running
-Once you've installed and prepared a database you can run the app from the project root via `./manage.py runserver`
+Once you've installed all the dependencies, prepared a database, and configured your environment-variables you're ready to run the app. From the top level directory type
+```
+./manage.py runserver
+```
 
 You may also specify the port and host like so:
 ```
@@ -77,7 +94,34 @@ This will also run against the database specified in that configuration rather t
 ### Tests
 The environment is preconfigured to contain [pep8][pep8] and [pylint][pylint], popular Python static analysis tools. [pytest][pytest] and [webtest][webtest] are also used for automated testing. You can run all the tests via `make check`
 
-### Configuration
+### Migrations
+We use [alembic][alembic] and [flask-migrate][flask-migrate] for keeping a revision history of database schemas. You can see the history at any time:
+```
+./manage.py db history
+```
+
+Common operations available are:
+```
+# ensures that the current database is up-to-date
+./manage.py db upgrade
+
+# rolls back the database to the previous revision
+./manage.py db downgrade
+
+# like make db-upgrade, but on the production database
+APP_ENV=prod ./manage.py db upgrade
+```
+
+These are thin wrappers around the underlying `alembic` commands. For a full list of commands type `./manage.py db --help`
+
+If you make changes to the schema, you'll want to generate a new Alembic revision.
+```
+./manage.py db migrate -m "Short description of your change"
+```
+
+This will create a new revision file in the migrations directory with upgrade and downgrade scripts. You should inspect it for accuracy. Type `./manage.py db upgrade` to test it out. If all seems good, then commit the alembic revision to git with your schema changes. Use `APP_ENV=prod ./manage.py db upgrade` to run the upgrade on production.
+
+### Additional configuration
 I need to be written!
 
 [alembic]: http://alembic.readthedocs.org/en/latest/
@@ -94,6 +138,7 @@ I need to be written!
 [pep8]: https://pypi.python.org/pypi/pep8
 [pylint]: https://pypi.python.org/pypi/pylint
 [pytest]: http://pytest.org/latest/contents.html
+[secret-key]: http://flask.pocoo.org/docs/quickstart/#sessions
 [sqlalchemy]: http://www.sqlalchemy.org/
 [virtualenv]: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 [virtualenvwrapper]: http://virtualenvwrapper.readthedocs.org/en/latest/
