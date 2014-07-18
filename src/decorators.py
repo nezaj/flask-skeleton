@@ -3,7 +3,7 @@ from threading import Thread
 
 from flask import flash, redirect, request, url_for
 
-from .data.db import db
+from .data.database import db
 from .data.models import UserPasswordToken
 
 def async(f):

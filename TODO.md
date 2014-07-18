@@ -1,5 +1,6 @@
 Action
 =======================
+* Add README info for upgrading database
 
 Backlog
 =======================

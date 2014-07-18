@@ -20,6 +20,12 @@ class DatabaseConnection(object):
         "Drops tables defined on Base metadata"
         Base.metadata.drop_all(self.engine)
 
+    # Alembic configuration uses db.metadata to detect schema changes
+    # pylint: disable=R0201
+    @property
+    def metadata(self):
+        return Base.metadata
+
     @contextmanager
     def transient_session(self):
         "A shortcut for handling short-lived SQLAlchemy sessions."

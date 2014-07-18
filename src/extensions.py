@@ -14,3 +14,6 @@ login_manager.login_message_category = 'warning'
 
 from flask_mail import Mail
 mail = Mail()
+
+from flask_migrate import Migrate
+migrate = Migrate()

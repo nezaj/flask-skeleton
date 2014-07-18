@@ -17,12 +17,10 @@ class Config(object):
     SQLALCHEMY_LOG_LEVEL = logging.WARN
     STDERR_LOG_FORMAT = ('%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p')
 
-    # Location of db connection. Use in-memory db by default
-    SQLALCHEMY_DATABASE_URI = URL(drivername='sqlite', database=None)
-
     # Useful directories
-    SRC_DIR = os.path.dirname(os.path.abspath(__file__))
-    STATIC_DIR = os.path.join(SRC_DIR, 'static')
+    APP_DIR = os.path.dirname(os.path.abspath(__file__))  # This directory
+    PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
+    STATIC_DIR = os.path.join(APP_DIR, 'static')
 
     # Number of rounds for bcrypt hashing
     # timeit Bcrypt().generate_password_hash('some12uihr3', 3) ~ 1.49ms per loop
@@ -43,12 +41,11 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     ENV = 'dev'
-
-    # Enable the flask debugger
     DEBUG = True
 
-    # DB is located in web directory
-    SQLALCHEMY_DATABASE_URI = URL(drivername='sqlite', database='dev.db')
+    DB_NAME = 'dev.db'
+    DB_PATH = os.path.join(Config.PROJECT_ROOT, DB_NAME)
+    SQLALCHEMY_DATABASE_URI = URL(drivername='sqlite', database=DB_PATH)
 
 class TestConfig(Config):
     ENV = 'test'

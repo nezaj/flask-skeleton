@@ -1,7 +1,7 @@
 from flask import Flask
 
-from .data.db import db
-from .extensions import bcrypt, login_manager, mail
+from .data.database import db
+from .extensions import bcrypt, login_manager, mail, migrate
 from .loggers import get_app_stderr_handler, configure_sqlalchemy_logger
 from . import assets
 from . import auth, public, services
@@ -38,6 +38,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    migrate.init_app(app, db)
 
 def register_blueprints(app):
     " Registers blueprint routes on app "

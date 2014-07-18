@@ -2,7 +2,7 @@ from sqlalchemy.schema import Column
 from sqlalchemy.types import Integer
 
 from .base import Base
-from .db import db
+from .database import db
 
 class CRUDMixin(object):
     " Provides CRUD interface for models "

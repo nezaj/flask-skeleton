@@ -6,7 +6,7 @@ from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import Boolean, Integer, String, DateTime
 
 from .user import User
-from ..db import db
+from ..database import db
 from ..mixins import CRUDModel
 from ..util import generate_random_token
 

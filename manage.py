@@ -23,18 +23,19 @@ import_env()
 
 from flask_script import Manager
 from flask_script.commands import ShowUrls
+from flask_migrate import MigrateCommand
 
 from src.app import create_app
 from src.settings import app_config
 from src.data.base import Base
-from src.data.db import db
+from src.data.database import db
 from src.data.manager import manager as database_manager
 from src.data import models
 
 app = create_app(app_config)
 manager = Manager(app)
 
-manager.add_command("db", database_manager)
+manager.add_command('db', MigrateCommand)
 manager.add_command("routes", ShowUrls())
 
 @manager.shell

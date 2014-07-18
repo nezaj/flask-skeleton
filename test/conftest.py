@@ -4,7 +4,7 @@ from webtest import TestApp
 
 from src.settings import TestConfig
 from src.app import create_app
-from src.data.db import db as _db
+from src.data.database import db as _db
 
 @pytest.yield_fixture(scope='function')
 def app():
