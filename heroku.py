@@ -2,9 +2,11 @@
 """
 Launch script for heroku
 """
+import os
+from src.app import create_app
+from src.settings import app_config
 
 def import_env():
-    import os
     if os.path.exists('.env'):
         print 'Importing environment from .env...'
         for line in open('.env'):
@@ -13,8 +15,5 @@ def import_env():
                 os.environ[var[0]] = var[1]
 
 import_env()
-
-from src.app import create_app
-from src.settings import app_config
 
 flask_app = create_app(app_config)

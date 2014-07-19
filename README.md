@@ -6,6 +6,7 @@ Here's the stuff you get right off the bat when using Flask-Skeleton:
 * Custom error (401, 403, 404, 500) templates
 * Database migrations support ([Flask-Migrate][flask-Migrate])
 * Functional and unit testing boilerplate with examples ([pytest][pytest] and [webtest][webtest])
+* Heroku and Postgres configuration for fast deployment
 * Modular Flask application architecture using [Application Factories][app-factory] and [Blueprints][blueprints]
 * ORM integration ([SQLAlchemy][sqlalchemy])
 * Python static analysis tools ([pylint][pylint] and [pep8][pep8])
@@ -31,7 +32,7 @@ sudo pip install virtualenv
 make virtualenv
 source ~/.virtualenvs/flask-skeleton/bin/activate
 ./manage.py db upgrade
-python -c 'import os; print "APP_KEY={}".format(os.urandom(24))' > .env  #  Generates random secret key for the app
+python -c 'import os; print "APP_KEY={}".format(os.urandom(24))' > .env  # Generates random secret key for the app
 ./manage.py runserver
 ```
 
@@ -62,6 +63,12 @@ If you ever need to upgrade it or install packages which appeared since your las
 You need to pick a database to run the app against. By default, the development configuration points to a local SQLlite database `dev.db` located at the top level directory. Run the following to create the database
 ```
 ./manage.py db upgrade
+```
+
+You can also launch a repl connected to your database. By default this will connect to the database defined by `SQLALCHEMY_DATABASE_URI` in `DevelopmentConfig` from the settings module
+```
+./manage.py db repl
+APP_ENV=prod ./manage.py db repl  # Connect to prod database
 ```
 
 ### Environment variables
@@ -96,7 +103,7 @@ This will also run against the database specified in that configuration rather t
 The environment is preconfigured to contain [pep8][pep8] and [pylint][pylint], popular Python static analysis tools. [pytest][pytest] and [webtest][webtest] are also used for automated testing. You can run all the tests via `make check`
 
 ### Migrations
-We use [alembic][alembic] and [flask-migrate][flask-migrate] for keeping a revision history of database schemas. You can see the history at any time:
+[Alembic][alembic] and [flask-migrate][flask-migrate] are used for keeping a revision history of database schemas. You can see the history at any time:
 ```
 ./manage.py db history
 ```
