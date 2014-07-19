@@ -2,6 +2,7 @@
 Flask Skeleton provides a base structure for a medium-sized Flask app. This incorporates several Flask best practices and is my default setup for whenever I create a new Flask project. This was built and tested with Python 2.
 
 Here's the stuff you get right off the bat when using Flask-Skeleton:
+* Bootstrap starter template
 * Asset concatenation and minification ([Alembic][alembic] and [Flask-Assets][flask-assets])
 * Custom error (401, 403, 404, 500) templates
 * Database migrations support ([Flask-Migrate][flask-Migrate])
@@ -10,8 +11,9 @@ Here's the stuff you get right off the bat when using Flask-Skeleton:
 * Modular Flask application architecture using [Application Factories][app-factory] and [Blueprints][blueprints]
 * ORM integration ([SQLAlchemy][sqlalchemy])
 * Python static analysis tools ([pylint][pylint] and [pep8][pep8])
+* REPL connected to your database
 * Secure user authentication with password hashing ([Flask-Login][flask-login] and [Flask-Bcrypt][flask-bcrypt])
-* User email activation and password recovery
+* User email activation ([Flask-Mail][flask-mail]) and password recovery
 
 ## Table of contents
 * [Quickstart](#quickstart)
@@ -21,7 +23,9 @@ Here's the stuff you get right off the bat when using Flask-Skeleton:
 * [Running](#running)
 * [Tests](#tests)
 * [Migrations](#migrations)
-* [Additional configuration](#additional-configuration)
+* [Mail](#mail)
+* [Thanks](#thanks)
+* [Changelog](#changelog)
 
 ### Quickstart
 Because sometimes you just want to see it work
@@ -132,8 +136,37 @@ This will create a new revision file in the migrations directory with upgrade an
 APP_ENV=prod ./manage.py db upgrade`
 ```
 
-### Additional configuration
-I need to be written!
+### Mail
+User activation and password recovery involves sending emails from the application. The default configured mail server is `smtp.googlemail.com`. You can edit the `settings` module if you wish to use a different server. In order to send emails you will need to export authentication credentials to your environment. You can append these to your `.env` file
+```
+echo "APP_MAIL_USERNAME=example@gmail.com" >> .env
+echo "APP_MAIL_PASSWORD=my-mail-password" >> .env
+```
+
+### Thanks
+* [@mquander][mquander] for your patience and mentoring
+* [@miguelgrinberg][miguelgrinberg] for your excellent [flask tutorial][mega-tutorial]
+* [@sloria][sloria] for your great [starter template][cookiecutter-flask]
+
+## Changelog
+
+### 0.1.0 (07/19/14)
+* **First release**
+* Application factories and Blueprints
+* Bootstrap starter template
+* Asset concatenation and minification
+* Custom error (401, 403, 404, 500) templates
+* Database migrations support
+* Database REPL
+* Flask-Login for user authentication
+* Flask-Bcrypt for password hashing
+* Flask-Mail for sending emails
+* Functional and unit testing boilerplate with examples
+* Heroku and Postgres configuration for fast deployment
+* pep8 and pylint for static analysis
+* SQLAlchemy integration
+* Token based account activation and password recovery
+* User and UserPasswordToken models
 
 [alembic]: http://alembic.readthedocs.org/en/latest/
 [app-config]: http://flask.pocoo.org/docs/config/#config
@@ -142,6 +175,7 @@ I need to be written!
 [flask-assets]: http://flask-assets.readthedocs.org/en/latest/
 [flask-bcrypt]: https://pythonhosted.org/Flask-Bcrypt/
 [flask-login]: https://flask-login.readthedocs.org/en/latest/
+[flask-mail]: https://pythonhosted.org/flask-mail/
 [flask-migrate]: http://flask-migrate.readthedocs.org/en/latest/
 [flask-skeleton]: http://flask-skeleton.herokuapp.com/
 [flask-script]: http://flask-script.readthedocs.org/en/latest/
@@ -154,3 +188,9 @@ I need to be written!
 [virtualenv]: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 [virtualenvwrapper]: http://virtualenvwrapper.readthedocs.org/en/latest/
 [webtest]: http://webtest.readthedocs.org/en/latest/
+
+[cookiecutter-flask]: https://github.com/sloria/cookiecutter-flask
+[mega-tutorial]: http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+[mquander]: https://github.com/mquander
+[miguelgrinberg]: https://github.com/miguelgrinberg
+[sloria]: https://github.com/sloria
