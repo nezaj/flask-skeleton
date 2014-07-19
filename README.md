@@ -3,6 +3,7 @@ Flask Skeleton provides a base structure for a medium-sized Flask app. This inco
 
 Here's the stuff you get right off the bat when using Flask-Skeleton:
 * Asset concatenation and minification ([Alembic][alembic] and [Flask-Assets][flask-assets])
+* Custom error (401, 403, 404, 500) templates
 * Database migrations support ([Flask-Migrate][flask-Migrate])
 * Functional and unit testing boilerplate with examples ([pytest][pytest] and [webtest][webtest])
 * Modular Flask application architecture using [Application Factories][app-factory] and [Blueprints][blueprints]
