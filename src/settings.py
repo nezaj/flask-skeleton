@@ -31,6 +31,8 @@ class Config(object):
     MAIL_PORT = 465
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
+
+    # The account used to authenticate gmail service
     MAIL_USERNAME = os.environ.get('APP_MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('APP_MAIL_PASSWORD')
 
