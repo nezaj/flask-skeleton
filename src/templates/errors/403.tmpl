@@ -1,0 +1,14 @@
+{% extends "shared/layout.tmpl" %}
+
+{% block title %}Forbidden{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="text-center">
+        <h1>Forbidden</h1>
+        <p>Sorry, you don't have permission to do that.</p>
+        <p>Want to <a href="{{ url_for('public.index') }}">go home</a> instead?</p>
+    </div>
+</div>
+{% endblock %}
+

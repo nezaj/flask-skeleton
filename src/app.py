@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from .data.database import db
 from .extensions import bcrypt, login_manager, mail, migrate
@@ -14,6 +14,7 @@ def create_app(config_obj):
     register_loggers(app)
     register_extensions(app)
     register_blueprints(app)
+    register_errorhandlers(app)
     return app
 
 def register_loggers(app):
@@ -45,3 +46,12 @@ def register_blueprints(app):
     app.register_blueprint(auth.views.blueprint)
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(services.views.blueprint, url_prefix="/services")
+
+def register_errorhandlers(app):
+    " Register custom error pages "
+    def render_error(error):
+        error_code = getattr(error, 'code', 500)
+        return render_template('errors/{}.tmpl'.format(error_code)), error_code
+
+    for errcode in [401, 403, 404, 500]:
+        app.errorhandler(errcode)(render_error)
