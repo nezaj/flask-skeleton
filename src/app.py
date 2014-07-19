@@ -10,8 +10,8 @@ def create_app(config_obj):
     " Factory for creating app "
     app = Flask(__name__)
     app.config.from_object(config_obj)
-    register_loggers(app)
     initialize_app(app)
+    register_loggers(app)
     register_extensions(app)
     register_blueprints(app)
     return app
@@ -42,6 +42,6 @@ def register_extensions(app):
 
 def register_blueprints(app):
     " Registers blueprint routes on app "
-    app.register_blueprint(auth.views.bp)
-    app.register_blueprint(public.views.bp)
-    app.register_blueprint(services.views.bp, url_prefix="/services")
+    app.register_blueprint(auth.views.blueprint)
+    app.register_blueprint(public.views.blueprint)
+    app.register_blueprint(services.views.blueprint, url_prefix="/services")

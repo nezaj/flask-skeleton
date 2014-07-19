@@ -10,9 +10,9 @@ from ..decorators import reset_token_required
 from ..emails import send_activation, send_password_reset
 from ..extensions import login_manager
 
-bp = Blueprint('auth', __name__)
+blueprint = Blueprint('auth', __name__)
 
-@bp.route('/activate', methods=['GET'])
+@blueprint.route('/activate', methods=['GET'])
 def activate():
     " Activation link for email verification "
     userid = request.args.get('userid')
@@ -30,7 +30,7 @@ def activate():
 
     return redirect(url_for('public.index'))
 
-@bp.route('/forgot_password', methods=['GET', 'POST'])
+@blueprint.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     form = EmailForm()
     if form.validate_on_submit():
@@ -50,7 +50,7 @@ def load_user(userid):  # pylint: disable=W0612
     "Register callback for loading users from session"
     return db.session.query(User).get(int(userid))
 
-@bp.route('/login', methods=['GET', 'POST'])
+@blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -63,14 +63,14 @@ def login():
             flash("Invalid email/password combination", "danger")
     return render_template("auth/login.tmpl", form=form)
 
-@bp.route('/logout', methods=['GET'])
+@blueprint.route('/logout', methods=['GET'])
 @login_required
 def logout():
     logout_user()
     flash("Logged out successfully", "info")
     return redirect(url_for('public.index'))
 
-@bp.route('/register', methods=['GET', 'POST'])
+@blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -82,7 +82,7 @@ def register():
     return render_template("auth/register.tmpl", form=form)
 
 @login_required
-@bp.route('/resend_activation_email', methods=['GET'])
+@blueprint.route('/resend_activation_email', methods=['GET'])
 def resend_activation_email():
     if current_user.is_verified():
         flash("This account has already been activated.", 'warning')
@@ -93,7 +93,7 @@ def resend_activation_email():
 
     return redirect(url_for('public.index'))
 
-@bp.route('/reset_password', methods=['GET', 'POST'])
+@blueprint.route('/reset_password', methods=['GET', 'POST'])
 @reset_token_required
 def reset_password(userid, user_token):
     user = db.session.query(User).get(userid)
