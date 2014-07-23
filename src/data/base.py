@@ -62,10 +62,7 @@ class BaseQuery(Query):
         Returns a Pagination object containing `per_page` items from page
         `page`. By default it will abort with 404 if no items were
         found and the page was larger than 1. This behavior can be
-        disabled by setting `die` to `False`. If sort_attr and
-        sort_dir are specified, then order the items appropriately.
-        If search_cols and search_query are specified, then only
-        return items where the given cols match the query string.
+        disabled by setting `die` to `False`.
         """
         if die and page < 1:
             from flask import abort
