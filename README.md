@@ -30,13 +30,24 @@ Here's the stuff you get right off the bat when using Flask-Skeleton:
 ### Quickstart
 Because sometimes you just want to see it work
 ```
-git clone git@github.com:nezaj/flask-skeleton.git
-cd flask-skeleton
+# Clone the project
+git clone https://github.com/nezaj/flask-skeleton.git [PROJECT_NAME]
+cd [PROJECT_NAME]
+
+# Reset the git history and remote repo
+rm -rf .git
+git init
+git add . && git commit -m "Initial Commit"
+git remote add origin git@github.com:[USERNAME]/[REPO]
+
+# Build and setup app
 sudo pip install virtualenv
 make virtualenv
-source ~/.virtualenvs/flask-skeleton/bin/activate
+source ~/.virtualenvs/[PROJECT_NAME]/bin/activate
 ./manage.py db upgrade
 python -c 'import os; print "APP_KEY={}".format(os.urandom(24))' > .env  # Generates random secret key for the app
+
+# Run it
 ./manage.py runserver
 ```
 
